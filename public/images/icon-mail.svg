@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon-mail" filter="url(#filter0_d_0_26)">
+<rect x="10" y="6" width="40" height="40" rx="12" fill="url(#paint0_linear_0_26)"/>
+<rect id="Rectangle" x="17" y="17" width="26" height="18" rx="2" stroke="var(--stroke-0, white)" stroke-width="2"/>
+<path id="Vector" d="M16 18L30 26L44 18" stroke="var(--stroke-0, white)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<filter id="filter0_d_0_26" x="0" y="0" width="60" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.568627 0 0 0 0 0.698039 0 0 0 0.3 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_26"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_26" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_26" x1="30" y1="6" x2="30" y2="46" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6BB8D4"/>
+<stop offset="1" stop-color="#0891B2"/>
+</linearGradient>
+</defs>
+</svg>

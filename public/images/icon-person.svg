@@ -1,0 +1,27 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon-person" filter="url(#filter0_d_0_29)">
+<g clip-path="url(#clip0_0_29)">
+<rect x="10" y="6" width="40" height="40" rx="12" fill="url(#paint0_linear_0_29)"/>
+<circle id="Ellipse" cx="30" cy="20" r="5" stroke="var(--stroke-0, white)" stroke-width="2"/>
+<path id="Vector" d="M18 46V38H42V46" stroke="var(--stroke-0, white)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_0_29" x="0" y="0" width="60" height="60" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="5"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 0.517647 0 0 0 0 0.780392 0 0 0 0.3 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_29"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_29" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_29" x1="30" y1="6" x2="30" y2="46" gradientUnits="userSpaceOnUse">
+<stop stop-color="#38BDF8"/>
+<stop offset="1" stop-color="#0284C7"/>
+</linearGradient>
+<clipPath id="clip0_0_29">
+<rect x="10" y="6" width="40" height="40" rx="12" fill="white"/>
+</clipPath>
+</defs>
+</svg>
