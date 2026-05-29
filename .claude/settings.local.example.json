@@ -1,0 +1,9 @@
+{
+  "env": {
+    "NEXT_PUBLIC_API_URL": "fill-in-your-api-url",
+    "OTHER_PERSONAL_SECRET": ""
+  },
+  "permissions": {
+    "allow": []
+  }
+}
