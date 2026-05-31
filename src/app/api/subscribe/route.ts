@@ -7,7 +7,16 @@ type Audience = (typeof VALID_AUDIENCES)[number];
 type DeliveryTime = (typeof VALID_TIMES)[number];
 
 export async function POST(req: NextRequest) {
-  const body = await req.json() as Record<string, unknown>;
+  let body: Record<string, unknown>;
+  try {
+    body = (await req.json()) as Record<string, unknown>;
+  } catch {
+    return NextResponse.json(
+      { error: "요청 형식이 올바르지 않습니다." },
+      { status: 400 }
+    );
+  }
+
   const { email, audience, deliveryTime } = body;
 
   if (
@@ -21,14 +30,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!VALID_AUDIENCES.includes(audience as Audience)) {
+  if (
+    typeof audience !== "string" ||
+    !VALID_AUDIENCES.includes(audience as Audience)
+  ) {
     return NextResponse.json(
       { error: "직군 선택이 올바르지 않습니다." },
       { status: 400 }
     );
   }
 
-  if (!VALID_TIMES.includes(deliveryTime as DeliveryTime)) {
+  if (
+    typeof deliveryTime !== "string" ||
+    !VALID_TIMES.includes(deliveryTime as DeliveryTime)
+  ) {
     return NextResponse.json(
       { error: "수신 시간 선택이 올바르지 않습니다." },
       { status: 400 }
