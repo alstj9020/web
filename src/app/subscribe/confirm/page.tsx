@@ -43,7 +43,7 @@ function ConfirmContent() {
         ].map(({ label, value }) => (
           <div key={label} className="flex items-center justify-between">
             <span className="text-[#a8b8d0] text-[13px]">{label}</span>
-            <span className="text-[#f5f6f8] font-medium text-[14px] break-all text-right max-w-[60%]">{value}</span>
+            <span className="text-[#f5f6f8] font-medium text-[14px] break-all text-right">{value}</span>
           </div>
         ))}
       </div>
