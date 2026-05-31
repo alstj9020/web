@@ -4,12 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function ConfirmContent() {
   const searchParams = useSearchParams();
-  const email = searchParams.get("email") ?? "등록된 이메일";
+  const router = useRouter();
+  const email = searchParams.get("email");
   const audience = searchParams.get("audience") ?? "개발자";
   const deliveryTime = searchParams.get("deliveryTime") ?? "오후 12시";
+
+  if (!email) {
+    router.replace("/");
+    return null;
+  }
 
   return (
     <div className="flex flex-col items-center gap-6 text-center max-w-md">
