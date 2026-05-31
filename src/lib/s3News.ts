@@ -10,6 +10,7 @@ export const s3 = new S3Client({ region: process.env.AWS_REGION ?? "ap-northeast
 export const BUCKET = "2026-inha-cc-07-s3";
 
 export const SOURCE_NAME_MAP: Record<string, string> = {
+  github: "GitHub Advisory",
   github_advisory: "GitHub Advisory",
   nvd: "NVD",
   cisa: "CISA",
