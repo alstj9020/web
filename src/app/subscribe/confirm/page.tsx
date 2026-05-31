@@ -29,7 +29,7 @@ function ConfirmContent() {
           구독이 완료됐어요!
         </h1>
         <p className="text-[#a8d8ea] text-[16px] leading-relaxed">
-          내일 아침부터 선택하신 시간에<br />맞춤 보안 뉴스를 보내드릴게요.
+          내일부터 선택하신 시간에<br />맞춤 보안 뉴스를 보내드릴게요.
         </p>
       </div>
 
@@ -63,7 +63,7 @@ function ConfirmContent() {
 
 export default function SubscribeConfirmPage() {
   return (
-    <main className="min-h-screen bg-[#1e2235] flex items-center justify-center px-6 py-16">
+    <main className="h-screen overflow-hidden bg-[#1e2235] flex items-center justify-center px-6 py-16">
       <Suspense fallback={<div className="text-[#a8d8ea] text-[16px]">로딩 중...</div>}>
         <ConfirmContent />
       </Suspense>
