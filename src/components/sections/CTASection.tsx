@@ -65,7 +65,7 @@ export default function CTASection() {
   }, [email, selectedAudience, selectedTime, router]);
 
   return (
-    <section className="bg-[#1e2235] flex flex-col gap-5 items-center justify-center w-full px-6 md:px-16 lg:px-[120px] py-16 md:py-24">
+    <section id="cta" className="bg-[#1e2235] flex flex-col gap-5 items-center justify-center w-full px-6 md:px-16 lg:px-[120px] py-16 md:py-24">
       <div className="relative size-[120px] md:size-[140px] shrink-0">
         <Image src="/images/haru-wink.svg" alt="하루보안 윙크 캐릭터" fill className="object-contain" />
       </div>

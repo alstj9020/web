@@ -21,9 +21,9 @@ export default function HeroSection() {
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center pt-2 w-full sm:w-auto px-4 sm:px-0">
-        <button className="bg-[#6bb8d4] text-[#1e2235] font-bold text-[16px] px-8 py-4 rounded-xl cursor-pointer hover:opacity-90 transition-opacity w-full sm:w-auto">
+        <a href="#cta" className="bg-[#6bb8d4] text-[#1e2235] font-bold text-[16px] px-8 py-4 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto text-center">
           등록하고 메일 받기
-        </button>
+        </a>
         <button className="border-2 border-[#6bb8d4] text-[#6bb8d4] font-bold text-[16px] px-[30px] py-[14px] rounded-xl cursor-pointer hover:bg-[#6bb8d4]/10 transition-colors w-full sm:w-auto">
           서비스 자세히 보기
         </button>
