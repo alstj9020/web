@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
 import {
   listEnrichedKeys,
-  fetchEnrichedJson,
+  fetchEnrichedBatch,
   getSourceName,
   mapSeverity,
-  deriveTitle,
   SEVERITY_ORDER,
   type TaggedNews,
 } from "@/lib/s3News";
-import type { ProcessedNews, NewsDisplayItem, AudienceLabel } from "@/types/news";
+import type { NewsDisplayItem, AudienceLabel } from "@/types/news";
 
 export const revalidate = 300;
 
-const MAX_FETCH = 100;
+/** 소스별 최신 배치 파일을 최대 이 수만큼 가져옴 */
+const MAX_BATCH_FILES = 5;
 
 const AUDIENCE_MAP: Record<string, AudienceLabel> = {
   general: "일반인", developer: "개발자", security: "보안직군",
@@ -80,8 +80,8 @@ function toDisplayItem(item: TaggedNews, sourceCount: number): NewsDisplayItem {
   const primary: AudienceLabel = AUDIENCE_MAP[item.audience.primary] ?? "보안직군";
 
   return {
-    id: allCveIds[0] ?? item._key,
-    title: deriveTitle(item as ProcessedNews),
+    id: item.id || allCveIds[0] || item._key,
+    title: item.title,
     excerpt: item.summary,
     severity: mapSeverity(item.severity.label),
     cvss: item.severity.cvss_score,
@@ -98,6 +98,7 @@ function toDisplayItem(item: TaggedNews, sourceCount: number): NewsDisplayItem {
     })),
     kevListed: item.identifiers.kev_listed,
     ransomwareKnown: item.identifiers.ransomware_known,
+    publishedAt: item.published_at ?? item._enriched_at,
   };
 }
 
@@ -105,15 +106,23 @@ export async function GET() {
   try {
     const allEntries = await listEnrichedKeys();
 
+    if (allEntries.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    // 최신 배치 파일 MAX_BATCH_FILES개 선택
     const topEntries = allEntries
       .sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime())
-      .slice(0, MAX_FETCH);
+      .slice(0, MAX_BATCH_FILES);
 
-    const rawItems = (await Promise.all(topEntries.map(fetchEnrichedJson))).filter(
-      (item): item is TaggedNews => item !== null
-    );
+    // 각 배치 파일에서 아이템 배열 추출 후 flatten
+    const allItems = (await Promise.all(topEntries.map(fetchEnrichedBatch))).flat();
 
-    const groups = deduplicateByCve(rawItems);
+    if (allItems.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    const groups = deduplicateByCve(allItems);
     const displayItems = groups
       .map((group) => toDisplayItem(mergeGroup(group), group.length))
       .sort(
@@ -124,7 +133,7 @@ export async function GET() {
 
     return NextResponse.json(displayItems);
   } catch (error) {
-    console.error("[api/news] S3 fetch error:", error);
+    console.error("[api/news] error:", error);
     return NextResponse.json(
       { error: "뉴스를 불러오는 중 오류가 발생했습니다." },
       { status: 500 }

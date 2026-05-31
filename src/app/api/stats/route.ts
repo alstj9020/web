@@ -1,32 +1,28 @@
 import { NextResponse } from "next/server";
 import {
   listEnrichedKeys,
-  fetchEnrichedJson,
+  fetchEnrichedBatch,
   getSourceName,
   mapSeverity,
-  deriveTitle,
   isToday,
   type TaggedNews,
+  type EnrichedEntry,
 } from "@/lib/s3News";
-import type { ProcessedNews, DashboardStats } from "@/types/news";
+import type { DashboardStats } from "@/types/news";
 
 export const revalidate = 300;
 
-const MAX_READ = 200;
+const MAX_BATCH_FILES = 10;
 
 export async function GET() {
   try {
     const allEntries = await listEnrichedKeys();
 
-    // 파일이 하나도 없어도 정상 응답
     if (allEntries.length === 0) {
       return NextResponse.json(emptyStats());
     }
 
-    // 오늘(KST) 수집 건수 — JSON 읽기 불필요, 메타데이터만 활용
-    const collectedToday = allEntries.filter((e) => isToday(e.lastModified)).length;
-
-    // 소스별 현황 — JSON 읽기 불필요
+    // 소스별 현황 — JSON 읽기 불필요, S3 메타데이터만 활용
     const sourceMap = new Map<string, { count: number; lastSeen: Date }>();
     for (const entry of allEntries) {
       const curr = sourceMap.get(entry.source);
@@ -49,14 +45,26 @@ export async function GET() {
       })
     );
 
-    // 최신 MAX_READ개 JSON 읽기 — severity 집계 + 최근 CVE 테이블
-    const recentEntries = allEntries
+    // 최신 배치 파일들 읽기
+    const topEntries = allEntries
       .sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime())
-      .slice(0, MAX_READ);
+      .slice(0, MAX_BATCH_FILES);
 
-    const items = (
-      await Promise.all(recentEntries.map(fetchEnrichedJson))
-    ).filter((item): item is TaggedNews => item !== null);
+    // 배치 파일별 fetch 결과를 (배치메타 + 아이템[]) 쌍으로 유지
+    const batches: { entry: EnrichedEntry; items: TaggedNews[] }[] = await Promise.all(
+      topEntries.map(async (entry) => ({
+        entry,
+        items: await fetchEnrichedBatch(entry),
+      }))
+    );
+
+    // 오늘(KST) enriched_at인 배치의 아이템 수 합산
+    const collectedToday = batches
+      .filter(({ entry }) => isToday(entry.lastModified))
+      .reduce((sum, { items }) => sum + items.length, 0);
+
+    // 전체 아이템 flatten
+    const allItems = batches.flatMap(({ items }) => items);
 
     // severity 분포 집계
     const severityDist: DashboardStats["severityDist"] = {
@@ -65,7 +73,7 @@ export async function GET() {
     let criticalCount = 0;
     let kevCount = 0;
 
-    for (const item of items) {
+    for (const item of allItems) {
       const label = item.severity.label?.toLowerCase() as keyof typeof severityDist;
       if (label in severityDist) {
         severityDist[label]++;
@@ -75,7 +83,7 @@ export async function GET() {
     }
 
     // 최근 주요 CVE — CVSS 6.0 이상, 상위 10개
-    const recentCVEs: DashboardStats["recentCVEs"] = items
+    const recentCVEs: DashboardStats["recentCVEs"] = allItems
       .filter(
         (item) =>
           (item.severity.cvss_score ?? 0) >= 6.0 &&
@@ -85,13 +93,13 @@ export async function GET() {
       .slice(0, 10)
       .map((item) => ({
         cveId: item.identifiers.cve_ids[0],
-        title: deriveTitle(item as ProcessedNews),
+        title: item.title,
         cvss: item.severity.cvss_score,
         severity: mapSeverity(item.severity.label),
         source: getSourceName(item._source),
       }));
 
-    const stats: DashboardStats = {
+    return NextResponse.json({
       collectedToday,
       criticalCount,
       kevCount,
@@ -100,9 +108,7 @@ export async function GET() {
       recentCVEs,
       subscribers: null,
       emailsSentToday: null,
-    };
-
-    return NextResponse.json(stats);
+    } satisfies DashboardStats);
   } catch (error) {
     console.error("[api/stats] error:", error);
     return NextResponse.json(

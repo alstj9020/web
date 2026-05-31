@@ -71,11 +71,11 @@ function NewsCard({ item }: { item: NewsDisplayItem }) {
             </span>
           ))}
         </div>
-        {item.affected[0] && (
-          <span className="text-[#a8b8d0] text-[11px]">
-            {item.affected[0].vendor}
-          </span>
-        )}
+        <span className="text-[#a8b8d0] text-[11px]">
+          {item.publishedAt
+            ? new Date(item.publishedAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })
+            : item.affected[0]?.vendor ?? ""}
+        </span>
       </div>
     </div>
   );

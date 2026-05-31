@@ -1,0 +1,112 @@
+{
+  "source": "github_advisory",
+  "enriched_at": "2026-05-31T02:00:00.000000+00:00",
+  "model": "claude-haiku-4-5-20251001",
+  "count": 2,
+  "items": [
+    {
+      "id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2",
+      "title": "Apache Log4j2 Remote Code Execution via JNDI Injection",
+      "source_url": "https://github.com/advisories/GHSA-jfh8-c2jp-hdp8",
+      "published_at": "2026-05-31T00:00:00Z",
+      "summary": "Apache Log4j2 2.14.1 이하 버전에서 JNDI 조회 기능을 악용한 원격 코드 실행 취약점이 발견됐습니다. 공격자가 특수 제작된 문자열을 로그 메시지에 삽입하면 외부 서버에서 악성 코드를 불러와 실행할 수 있습니다. 즉각적인 업데이트가 필요합니다.",
+      "language": "en",
+      "severity": {
+        "label": "critical",
+        "cvss_score": 10.0,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+        "epss_score": 0.97
+      },
+      "affected": [
+        {
+          "vendor": "Apache",
+          "product": "Log4j2",
+          "ecosystem": "maven",
+          "versions_affected": "2.0-beta9 이상 2.14.1 이하",
+          "versions_fixed": "2.15.0"
+        }
+      ],
+      "identifiers": {
+        "cve_ids": ["CVE-2021-44228"],
+        "ghsa_id": "GHSA-jfh8-c2jp-hdp8",
+        "kev_listed": true,
+        "ransomware_known": true
+      },
+      "tags": {
+        "categories": ["advisory", "patch", "vulnerability"],
+        "cwe": [
+          { "id": "CWE-917", "name": "Improper Neutralization of Special Elements used in an Expression Language Statement" }
+        ],
+        "attack_vectors": ["network"],
+        "tech_stack": ["java", "log4j", "maven"],
+        "topics": ["rce", "log4shell", "jndi-injection"]
+      },
+      "action": {
+        "required_action": "즉시 패치 적용",
+        "remediation": "Log4j2를 2.17.1 이상으로 업그레이드하십시오.",
+        "references": [
+          { "label": "Apache 공식 보안 공지", "url": "https://logging.apache.org/log4j/2.x/security.html" }
+        ]
+      },
+      "audience": {
+        "scores": { "general": 45, "developer": 95, "security": 90 },
+        "primary": "developer",
+        "confidence": 0.97,
+        "recommended_for": ["developer", "security"],
+        "reason": "Java 기반 서비스 운영자는 즉시 의존성을 확인해야 합니다."
+      }
+    },
+    {
+      "id": "b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3",
+      "title": "Weblate Server-Side Request Forgery in Mercurial backend",
+      "source_url": "https://github.com/advisories/GHSA-hfpv-mc5v-p9mm",
+      "published_at": "2026-05-30T16:41:13Z",
+      "summary": "Weblate의 구성요소 생성 기능에서 Mercurial 백엔드를 사용할 때 저장소 URL 검증이 누락되어, 인가된 사용자가 내부 주소를 지정하여 SSRF 공격을 수행할 수 있습니다.",
+      "language": "en",
+      "severity": {
+        "label": "medium",
+        "cvss_score": 5.0,
+        "cvss_vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:L/I:N/A:N",
+        "epss_score": null
+      },
+      "affected": [
+        {
+          "vendor": null,
+          "product": "Weblate",
+          "ecosystem": "pip",
+          "versions_affected": "< 5.15",
+          "versions_fixed": "5.15"
+        }
+      ],
+      "identifiers": {
+        "cve_ids": ["CVE-2025-66407"],
+        "ghsa_id": "GHSA-hfpv-mc5v-p9mm",
+        "kev_listed": false,
+        "ransomware_known": false
+      },
+      "tags": {
+        "categories": ["advisory", "vulnerability"],
+        "cwe": [
+          { "id": "CWE-918", "name": "Server-Side Request Forgery (SSRF)" }
+        ],
+        "attack_vectors": ["network"],
+        "tech_stack": ["weblate", "python"],
+        "topics": ["ssrf"]
+      },
+      "action": {
+        "required_action": null,
+        "remediation": "Weblate 패키지를 5.15 이상 버전으로 업그레이드하세요.",
+        "references": [
+          { "label": "GHSA-hfpv-mc5v-p9mm", "url": "https://github.com/WeblateOrg/weblate/security/advisories/GHSA-hfpv-mc5v-p9mm" }
+        ]
+      },
+      "audience": {
+        "scores": { "general": 15, "developer": 55, "security": 65 },
+        "primary": "security",
+        "confidence": 0.75,
+        "recommended_for": ["developer", "security"],
+        "reason": "번역 관리 도구 운영자와 보안 관리자가 알아두어야 할 SSRF 취약점입니다."
+      }
+    }
+  ]
+}

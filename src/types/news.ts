@@ -1,5 +1,9 @@
-/** S3 processed/enriched JSON 스키마 */
+/** S3 enriched 배치 파일 내 개별 아이템 스키마 */
 export interface ProcessedNews {
+  id: string;
+  title: string;
+  source_url: string;
+  published_at: string;
   summary: string;
   language: string;
   severity: {
@@ -9,7 +13,7 @@ export interface ProcessedNews {
     epss_score: number | null;
   };
   affected: {
-    vendor: string;
+    vendor: string | null;
     product: string;
     ecosystem: string;
     versions_affected: string;
@@ -31,7 +35,7 @@ export interface ProcessedNews {
   action: {
     required_action: string | null;
     remediation: string;
-    references: string[];
+    references: { label: string; url: string }[];
   };
   audience: {
     scores: { general: number; developer: number; security: number };
@@ -40,6 +44,15 @@ export interface ProcessedNews {
     recommended_for: string[];
     reason: string;
   };
+}
+
+/** S3 enriched 배치 파일 최상위 구조 */
+export interface BatchEnrichedFile {
+  source: string;
+  enriched_at: string;
+  model: string;
+  count: number;
+  items: ProcessedNews[];
 }
 
 export type SeverityLabel = "Critical" | "High" | "Medium" | "Low" | "Info";
@@ -87,7 +100,8 @@ export interface NewsDisplayItem {
   sourceCount: number;
   audience: AudienceLabel;
   recommendedFor: AudienceLabel[];
-  affected: { vendor: string; product: string; versions_fixed: string }[];
+  affected: { vendor: string | null; product: string; versions_fixed: string }[];
   kevListed: boolean;
   ransomwareKnown: boolean;
+  publishedAt: string;
 }
