@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { Toast } from "@/components/ui/Toast";
 
@@ -11,6 +12,8 @@ type AudienceType = (typeof AUDIENCE_OPTIONS)[number];
 type TimeType = (typeof TIME_OPTIONS)[number];
 
 export default function CTASection() {
+  const router = useRouter();
+
   const [selectedAudience, setSelectedAudience] = useState<AudienceType>("개발자");
   const [selectedTime, setSelectedTime] = useState<TimeType>("오후 12시");
   const [email, setEmail] = useState("");
@@ -29,16 +32,37 @@ export default function CTASection() {
 
     setLoading(true);
     try {
-      // TODO: 실제 API 연결 시 교체
-      await new Promise((r) => setTimeout(r, 800));
-      setToast({ message: `${email} 구독 완료! 내일 아침부터 받아보세요.`, type: "success" });
-      setEmail("");
-    } catch {
-      setToast({ message: "구독 중 오류가 발생했습니다. 다시 시도해 주세요.", type: "error" });
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          audience: selectedAudience,
+          deliveryTime: selectedTime,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json() as { error?: string };
+        throw new Error(data.error ?? "구독 중 오류가 발생했습니다.");
+      }
+
+      const params = new URLSearchParams({
+        email,
+        audience: selectedAudience,
+        deliveryTime: selectedTime,
+      });
+      router.push(`/subscribe/confirm?${params.toString()}`);
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "구독 중 오류가 발생했습니다. 다시 시도해 주세요.";
+      setToast({ message, type: "error" });
     } finally {
       setLoading(false);
     }
-  }, [email]);
+  }, [email, selectedAudience, selectedTime, router]);
 
   return (
     <section className="bg-[#1e2235] flex flex-col gap-5 items-center justify-center w-full px-6 md:px-16 lg:px-[120px] py-16 md:py-24">
