@@ -9,18 +9,30 @@ import { Toast, type ToastState } from "@/components/ui/Toast";
 function UnsubscribeContent() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email") ?? "등록된 이메일";
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
   const [toast, setToast] = useState<ToastState | null>(null);
 
   const handleUnsubscribe = async () => {
     setStatus("loading");
     try {
-      // TODO: 실제 API 연결
-      await new Promise((r) => setTimeout(r, 700));
+      const res = await fetch("/api/unsubscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json() as { error?: string };
+        throw new Error(data.error ?? "처리 중 오류가 발생했습니다.");
+      }
+
       setStatus("done");
-    } catch {
+    } catch (err) {
       setStatus("idle");
-      setToast({ message: "처리 중 오류가 발생했습니다. 다시 시도해 주세요.", type: "error" });
+      const message =
+        err instanceof Error ? err.message : "처리 중 오류가 발생했습니다. 다시 시도해 주세요.";
+      setToast({ message, type: "error" });
     }
   };
 
@@ -65,11 +77,14 @@ function UnsubscribeContent() {
         <div className="flex flex-col gap-3 w-full max-w-sm">
           <button
             onClick={handleUnsubscribe}
-            disabled={status === "loading"}
+            disabled={status === "loading" || !isValidEmail}
             className="bg-[#ef4444] text-white font-bold text-[16px] px-8 py-4 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed w-full"
           >
             {status === "loading" ? "처리 중..." : "구독 해지하기"}
           </button>
+          {!isValidEmail && (
+            <p className="text-[#ef4444] text-[13px]">유효한 이메일 링크로 접근해 주세요.</p>
+          )}
           <Link
             href="/"
             className="border-2 border-[#3d4f6e] text-[#a8b8d0] font-medium text-[15px] px-8 py-3.5 rounded-xl hover:border-[#6bb8d4] hover:text-[#6bb8d4] transition-colors text-center"
