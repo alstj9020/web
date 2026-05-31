@@ -15,12 +15,23 @@ function UnsubscribeContent() {
   const handleUnsubscribe = async () => {
     setStatus("loading");
     try {
-      // TODO: 실제 API 연결
-      await new Promise((r) => setTimeout(r, 700));
+      const res = await fetch("/api/unsubscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json() as { error?: string };
+        throw new Error(data.error ?? "처리 중 오류가 발생했습니다.");
+      }
+
       setStatus("done");
-    } catch {
+    } catch (err) {
       setStatus("idle");
-      setToast({ message: "처리 중 오류가 발생했습니다. 다시 시도해 주세요.", type: "error" });
+      const message =
+        err instanceof Error ? err.message : "처리 중 오류가 발생했습니다. 다시 시도해 주세요.";
+      setToast({ message, type: "error" });
     }
   };
 
