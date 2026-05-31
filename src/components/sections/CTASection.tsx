@@ -7,6 +7,7 @@ import { Toast } from "@/components/ui/Toast";
 
 const AUDIENCE_OPTIONS = ["일반인", "개발자", "보안직군"] as const;
 const TIME_OPTIONS = ["오전 8시", "오후 12시", "오후 6시"] as const;
+const TOPIC_OPTIONS = ["취약점/CVE", "랜섬웨어", "피싱·사회공학", "클라우드 보안", "법규·컴플라이언스"] as const;
 
 type AudienceType = (typeof AUDIENCE_OPTIONS)[number];
 type TimeType = (typeof TIME_OPTIONS)[number];
@@ -14,13 +15,24 @@ type TimeType = (typeof TIME_OPTIONS)[number];
 export default function CTASection() {
   const router = useRouter();
 
-  const [selectedAudience, setSelectedAudience] = useState<AudienceType>("개발자");
+  const [selectedAudience, setSelectedAudience] = useState<AudienceType | null>(null);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<TimeType>("오후 12시");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
+  const toggleTopic = useCallback((topic: string) => {
+    setSelectedTopics((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+    );
+  }, []);
+
   const handleSubscribe = useCallback(async () => {
+    if (!selectedAudience) {
+      setToast({ message: "직군을 선택해 주세요.", type: "error" });
+      return;
+    }
     if (!email.trim()) {
       setToast({ message: "이메일 주소를 입력해 주세요.", type: "error" });
       return;
@@ -39,6 +51,7 @@ export default function CTASection() {
           email,
           audience: selectedAudience,
           deliveryTime: selectedTime,
+          topics: selectedTopics,
         }),
       });
 
@@ -62,7 +75,7 @@ export default function CTASection() {
     } finally {
       setLoading(false);
     }
-  }, [email, selectedAudience, selectedTime, router]);
+  }, [email, selectedAudience, selectedTopics, selectedTime, router]);
 
   return (
     <section id="cta" className="bg-[#1e2235] flex flex-col gap-5 items-center justify-center w-full px-6 md:px-16 lg:px-[120px] py-16 md:py-24">
@@ -78,21 +91,46 @@ export default function CTASection() {
       </p>
 
       {/* 직군 선택 */}
-      <div className="flex flex-wrap gap-3 items-center justify-center pt-2">
-        {AUDIENCE_OPTIONS.map((option) => (
-          <button
-            key={option}
-            onClick={() => setSelectedAudience(option)}
-            className={`px-5 py-[10px] rounded-full font-bold text-[14px] cursor-pointer transition-colors ${
-              selectedAudience === option
-                ? "bg-[#6bb8d4] text-[#1e2235]"
-                : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
-            }`}
-          >
-            {option}
-          </button>
-        ))}
+      <div className="flex flex-col gap-3 items-center justify-center pt-2">
+        <p className="font-normal text-[#a8b8d0] text-[14px]">직군을 선택해 주세요</p>
+        <div className="flex flex-wrap gap-3 items-center justify-center">
+          {AUDIENCE_OPTIONS.map((option) => (
+            <button
+              key={option}
+              onClick={() => setSelectedAudience(option)}
+              className={`px-5 py-[10px] rounded-full font-bold text-[14px] cursor-pointer transition-colors ${
+                selectedAudience === option
+                  ? "bg-[#6bb8d4] text-[#1e2235]"
+                  : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {/* 관심 주제 선택 — 직군 선택 후 표시 */}
+      {selectedAudience && (
+        <div className="flex flex-col gap-3 items-center justify-center">
+          <p className="font-normal text-[#a8b8d0] text-[14px]">관심 주제를 선택해 주세요</p>
+          <div className="flex flex-wrap gap-3 items-center justify-center">
+            {TOPIC_OPTIONS.map((topic) => (
+              <button
+                key={topic}
+                onClick={() => toggleTopic(topic)}
+                className={`px-5 py-[10px] rounded-full font-medium text-[14px] cursor-pointer transition-colors ${
+                  selectedTopics.includes(topic)
+                    ? "bg-[#6bb8d4] text-[#1e2235]"
+                    : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
+                }`}
+              >
+                {topic}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* 시간 선택 */}
       <div className="flex flex-col gap-3 items-center justify-center">
