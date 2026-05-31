@@ -45,6 +45,35 @@ export interface ProcessedNews {
 export type SeverityLabel = "Critical" | "High" | "Medium" | "Low" | "Info";
 export type AudienceLabel = "일반인" | "개발자" | "보안직군";
 
+/** API /api/stats 응답 */
+export interface DashboardStats {
+  collectedToday: number;
+  criticalCount: number;
+  kevCount: number;
+  severityDist: {
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+    info: number;
+  };
+  sources: {
+    name: string;
+    count: number;
+    lastSeen: string;
+    active: boolean;
+  }[];
+  recentCVEs: {
+    cveId: string;
+    title: string;
+    cvss: number | null;
+    severity: SeverityLabel;
+    source: string;
+  }[];
+  subscribers: null;
+  emailsSentToday: null;
+}
+
 /** API /api/news 응답 아이템 */
 export interface NewsDisplayItem {
   id: string;
