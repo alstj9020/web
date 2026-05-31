@@ -7,7 +7,12 @@ import { Toast } from "@/components/ui/Toast";
 
 const AUDIENCE_OPTIONS = ["일반인", "개발자", "보안직군"] as const;
 const TIME_OPTIONS = ["오전 8시", "오후 12시", "오후 6시"] as const;
-const TOPIC_OPTIONS = ["취약점/CVE", "랜섬웨어", "피싱·사회공학", "클라우드 보안", "법규·컴플라이언스"] as const;
+
+const TOPICS_BY_AUDIENCE = {
+  일반인: ["개인정보 보호", "피싱·사기 예방", "랜섬웨어", "스마트폰 보안", "소셜미디어 보안"],
+  개발자: ["취약점/CVE", "웹 보안", "의존성·공급망 보안", "클라우드 보안", "인증·접근제어"],
+  보안직군: ["취약점/CVE", "위협 인텔리전스", "랜섬웨어·APT", "법규·컴플라이언스", "클라우드 보안"],
+} as const satisfies Record<string, readonly string[]>;
 
 type AudienceType = (typeof AUDIENCE_OPTIONS)[number];
 type TimeType = (typeof TIME_OPTIONS)[number];
@@ -97,7 +102,7 @@ export default function CTASection() {
           {AUDIENCE_OPTIONS.map((option) => (
             <button
               key={option}
-              onClick={() => setSelectedAudience(option)}
+              onClick={() => { setSelectedAudience(option); setSelectedTopics([]); }}
               className={`px-5 py-[10px] rounded-full font-bold text-[14px] cursor-pointer transition-colors ${
                 selectedAudience === option
                   ? "bg-[#6bb8d4] text-[#1e2235]"
@@ -115,7 +120,7 @@ export default function CTASection() {
         <div className="flex flex-col gap-3 items-center justify-center">
           <p className="font-normal text-[#a8b8d0] text-[14px]">관심 주제를 선택해 주세요</p>
           <div className="flex flex-wrap gap-3 items-center justify-center">
-            {TOPIC_OPTIONS.map((topic) => (
+            {TOPICS_BY_AUDIENCE[selectedAudience].map((topic) => (
               <button
                 key={topic}
                 onClick={() => toggleTopic(topic)}
