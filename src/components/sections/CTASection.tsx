@@ -38,6 +38,10 @@ export default function CTASection() {
       setToast({ message: "직군을 선택해 주세요.", type: "error" });
       return;
     }
+    if (selectedTopics.length === 0) {
+      setToast({ message: "관심 주제를 하나 이상 선택해 주세요.", type: "error" });
+      return;
+    }
     if (!email.trim()) {
       setToast({ message: "이메일 주소를 입력해 주세요.", type: "error" });
       return;
