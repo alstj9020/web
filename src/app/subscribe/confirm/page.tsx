@@ -12,6 +12,7 @@ function ConfirmContent() {
   const email = searchParams.get("email");
   const audience = searchParams.get("audience") ?? "개발자";
   const deliveryTime = searchParams.get("deliveryTime") ?? "오후 12시";
+  const topics = searchParams.get("topics")?.split(",").filter(Boolean) ?? [];
 
   if (!email) {
     router.replace("/");
@@ -33,19 +34,41 @@ function ConfirmContent() {
         </p>
       </div>
 
-      <div className="bg-[#2a3147] border border-[#3d4f6e] rounded-2xl px-6 py-5 w-full text-left flex flex-col gap-3">
+      <div className="bg-[#2a3147] border border-[#3d4f6e] rounded-2xl w-full px-6 py-5 flex flex-col items-center gap-5">
         <p className="text-[#6bb8d4] text-[12px] font-medium tracking-wide">구독 정보</p>
-        {[
-          { label: "이메일", value: email },
-          { label: "직군", value: audience },
-          { label: "발송 시간", value: deliveryTime },
-          { label: "발송 주기", value: "매일 1회" },
-        ].map(({ label, value }) => (
-          <div key={label} className="flex items-center justify-between">
-            <span className="text-[#a8b8d0] text-[13px]">{label}</span>
-            <span className="text-[#f5f6f8] font-medium text-[14px] break-all text-right">{value}</span>
+        <div className="w-full border-t border-[#3d4f6e] -my-2" />
+
+        <div className="flex flex-col gap-2 w-full">
+          <div className="flex justify-between">
+            <span className="text-[#a8b8d0] text-[13px]">이메일</span>
+            <span className="text-[#f5f6f8] font-medium text-[13px] break-all text-right">{email}</span>
           </div>
-        ))}
+          <div className="flex justify-between">
+            <span className="text-[#a8b8d0] text-[13px]">직군</span>
+            <span className="text-[#f5f6f8] font-medium text-[13px]">{audience}</span>
+          </div>
+          {topics.length > 0 && (
+            <div className="flex flex-wrap justify-end gap-1">
+              {topics.map((topic) => (
+                <span key={topic} className="bg-[#3d4f6e] text-[#a8b8d0] text-[11px] px-2 py-0.5 rounded-full">
+                  {topic}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 w-full">
+          {[
+            { label: "발송 시간", value: deliveryTime },
+            { label: "발송 주기", value: "매일 1회" },
+          ].map(({ label, value }) => (
+            <div key={label} className="flex justify-between">
+              <span className="text-[#a8b8d0] text-[13px]">{label}</span>
+              <span className="text-[#f5f6f8] font-medium text-[13px]">{value}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <Link
@@ -63,7 +86,7 @@ function ConfirmContent() {
 
 export default function SubscribeConfirmPage() {
   return (
-    <main className="h-screen overflow-hidden bg-[#1e2235] flex items-center justify-center px-6 py-16">
+    <main className="min-h-screen bg-[#1e2235] flex justify-center px-6 pt-16 pb-16">
       <Suspense fallback={<div className="text-[#a8d8ea] text-[16px]">로딩 중...</div>}>
         <ConfirmContent />
       </Suspense>
