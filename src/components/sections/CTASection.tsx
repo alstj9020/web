@@ -73,6 +73,7 @@ export default function CTASection() {
         email,
         audience: selectedAudience,
         deliveryTime: selectedTime,
+        topics: selectedTopics.join(","),
       });
       router.push(`/subscribe/confirm?${params.toString()}`);
     } catch (err) {
