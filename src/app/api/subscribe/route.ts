@@ -1,15 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const VALID_AUDIENCES = ["일반인", "개발자", "보안직군"] as const;
-const VALID_TIMES = ["오전 8시", "오후 12시", "오후 6시"] as const;
-const VALID_TOPICS = {
-  일반인: ["개인정보 보호", "피싱·사기 예방", "랜섬웨어", "스마트폰 보안", "소셜미디어 보안"],
-  개발자: ["취약점/CVE", "웹 보안", "의존성·공급망 보안", "클라우드 보안", "인증·접근제어"],
-  보안직군: ["취약점/CVE", "위협 인텔리전스", "랜섬웨어·APT", "법규·컴플라이언스", "클라우드 보안"],
-} as const satisfies Record<string, readonly string[]>;
-
-type Audience = (typeof VALID_AUDIENCES)[number];
-type DeliveryTime = (typeof VALID_TIMES)[number];
+import { AUDIENCE_OPTIONS, TIME_OPTIONS, TOPICS_BY_AUDIENCE, AudienceType, TimeType } from "@/constants/subscription";
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
@@ -37,7 +27,7 @@ export async function POST(req: NextRequest) {
 
   if (
     typeof audience !== "string" ||
-    !VALID_AUDIENCES.includes(audience as Audience)
+    !AUDIENCE_OPTIONS.includes(audience as AudienceType)
   ) {
     return NextResponse.json(
       { error: "직군 선택이 올바르지 않습니다." },
@@ -45,7 +35,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const validTopics = VALID_TOPICS[audience as Audience];
+  const validTopics = TOPICS_BY_AUDIENCE[audience as AudienceType];
   if (
     !Array.isArray(topics) ||
     topics.length === 0 ||
@@ -59,7 +49,7 @@ export async function POST(req: NextRequest) {
 
   if (
     typeof deliveryTime !== "string" ||
-    !VALID_TIMES.includes(deliveryTime as DeliveryTime)
+    !TIME_OPTIONS.includes(deliveryTime as TimeType)
   ) {
     return NextResponse.json(
       { error: "수신 시간 선택이 올바르지 않습니다." },
