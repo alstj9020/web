@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const VALID_AUDIENCES = ["일반인", "개발자", "보안직군"] as const;
-const VALID_TIMES = ["오전 8시", "오후 12시", "오후 6시"] as const;
-
-type Audience = (typeof VALID_AUDIENCES)[number];
-type DeliveryTime = (typeof VALID_TIMES)[number];
+import { AUDIENCE_OPTIONS, TIME_OPTIONS, TOPICS_BY_AUDIENCE, AudienceType, TimeType } from "@/constants/subscription";
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
@@ -17,7 +12,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { email, audience, deliveryTime } = body;
+  const { email, audience, deliveryTime, topics } = body;
 
   if (
     !email ||
@@ -32,7 +27,7 @@ export async function POST(req: NextRequest) {
 
   if (
     typeof audience !== "string" ||
-    !VALID_AUDIENCES.includes(audience as Audience)
+    !AUDIENCE_OPTIONS.includes(audience as AudienceType)
   ) {
     return NextResponse.json(
       { error: "직군 선택이 올바르지 않습니다." },
@@ -40,9 +35,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const validTopics = TOPICS_BY_AUDIENCE[audience as AudienceType];
+  if (
+    !Array.isArray(topics) ||
+    topics.length === 0 ||
+    !topics.every((t) => typeof t === "string" && (validTopics as readonly string[]).includes(t))
+  ) {
+    return NextResponse.json(
+      { error: "관심 주제 선택이 올바르지 않습니다." },
+      { status: 400 }
+    );
+  }
+
   if (
     typeof deliveryTime !== "string" ||
-    !VALID_TIMES.includes(deliveryTime as DeliveryTime)
+    !TIME_OPTIONS.includes(deliveryTime as TimeType)
   ) {
     return NextResponse.json(
       { error: "수신 시간 선택이 올바르지 않습니다." },
