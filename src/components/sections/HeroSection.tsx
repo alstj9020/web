@@ -22,7 +22,7 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-20 py-10 md:py-16 lg:py-24">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12 py-10 md:py-16 lg:py-20">
         {/* 텍스트 */}
         <motion.div
           className="flex-1 text-center md:text-left"
@@ -85,7 +85,7 @@ export default function HeroSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
         >
-          <div className="haru-float relative w-[160px] h-[160px] md:w-[220px] md:h-[220px]">
+          <div className="haru-float relative w-[120px] h-[120px] md:w-[160px] md:h-[160px]">
             <Image src="/images/haru-hero.svg" alt="하루보안 캐릭터" fill className="object-contain" />
           </div>
         </motion.div>

@@ -89,7 +89,7 @@ export default function CTASection() {
       />
 
       <div className="flex-1 flex items-center justify-center relative">
-        <div className="max-w-2xl mx-auto px-6 md:px-12 w-full py-16 text-center">
+        <div className="max-w-lg mx-auto px-6 md:px-8 w-full py-10 md:py-14 text-center">
           <motion.div
             className="flex justify-center mb-6"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -205,7 +205,7 @@ export default function CTASection() {
       </div>
 
       {/* 푸터 */}
-      <div className="flex flex-col gap-3 items-center w-full px-6 md:px-16 lg:px-[120px] py-6 border-t border-white/10 relative">
+      <div className="flex flex-col gap-3 items-center w-full px-6 md:px-8 py-5 border-t border-white/10 relative">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full max-w-[1280px]">
           <p className="font-bold text-[18px] text-white">하루보안</p>
           <div className="flex flex-wrap gap-4 sm:gap-7 items-center justify-center">

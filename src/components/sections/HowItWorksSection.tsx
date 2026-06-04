@@ -34,7 +34,7 @@ export default function HowItWorksSection() {
       className="snap-section flex items-center justify-center bg-[#f5f6f8]"
       aria-label="작동 방식"
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-10 md:py-16 lg:py-20">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-10 md:py-14">
         <div className="flex flex-col md:flex-row items-center gap-8 mb-8 md:mb-14">
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
@@ -75,7 +75,7 @@ export default function HowItWorksSection() {
           {steps.map(({ step, iconSrc, iconAlt, title, desc }, i) => (
             <motion.div
               key={i}
-              className="flex-1 flex flex-col items-center text-center px-6 py-8 relative"
+              className="flex-1 flex flex-col items-center text-center px-4 py-6 relative"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
