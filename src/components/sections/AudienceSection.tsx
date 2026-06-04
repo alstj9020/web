@@ -47,9 +47,9 @@ export default function AudienceSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="text-[#6bb8d4] font-semibold text-sm uppercase tracking-wider">For Everyone</p>
-          <h2 className="font-black text-3xl md:text-4xl text-[#1e2235]">당신의 직군에 맞춘 뉴스레터</h2>
-          <p className="font-normal text-base md:text-[18px] text-[#3d4f6e] max-w-xl">
+          <p className="text-[#6bb8d4] font-semibold text-xs uppercase tracking-wider">For Everyone</p>
+          <h2 className="font-black text-2xl md:text-3xl text-[#1e2235]">당신의 직군에 맞춘 뉴스레터</h2>
+          <p className="font-normal text-sm md:text-base text-[#3d4f6e] max-w-xl">
             같은 이슈도, 누구에게 전달하느냐에 따라 다르게 읽혀야 합니다.
           </p>
         </motion.div>
@@ -80,8 +80,8 @@ export default function AudienceSection() {
                 </span>
               </div>
 
-              <h3 className="text-xl font-bold text-[#1e2235] mb-3 whitespace-pre-line">{title}</h3>
-              <p className="text-[#3d4f6e] text-sm leading-relaxed mb-6">{desc}</p>
+              <h3 className="text-base font-bold text-[#1e2235] mb-2 whitespace-pre-line">{title}</h3>
+              <p className="text-[#3d4f6e] text-xs leading-relaxed mb-4">{desc}</p>
 
               <ul className="mt-auto space-y-2">
                 {bullets.map((pt, j) => (

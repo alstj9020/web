@@ -53,8 +53,8 @@ export default function HowItWorksSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-[#6bb8d4] font-semibold text-sm mb-2 uppercase tracking-wider">How It Works</p>
-            <h2 className="font-black text-3xl md:text-4xl text-[#1e2235] leading-tight">
+            <p className="text-[#6bb8d4] font-semibold text-xs mb-2 uppercase tracking-wider">How It Works</p>
+            <h2 className="font-black text-2xl md:text-3xl text-[#1e2235] leading-tight">
               3단계로 완성되는
               <br />
               나만의 보안 브리핑
@@ -85,8 +85,8 @@ export default function HowItWorksSection() {
                 <Image src={iconSrc} alt={iconAlt} fill className="object-contain" />
               </div>
               <span className="text-xs font-bold text-[#6bb8d4] tracking-widest mb-2">{step}</span>
-              <h3 className="font-bold text-xl text-[#1e2235] mb-3">{title}</h3>
-              <p className="text-[#3d4f6e] text-sm leading-relaxed max-w-xs">{desc}</p>
+              <h3 className="font-bold text-base text-[#1e2235] mb-2">{title}</h3>
+              <p className="text-[#3d4f6e] text-xs leading-relaxed max-w-xs">{desc}</p>
               {i < steps.length - 1 && (
                 <div className="md:hidden text-[#e8eaed] text-2xl mt-4">↓</div>
               )}

@@ -65,8 +65,8 @@ export default function ProblemSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-[#6bb8d4] font-semibold text-sm mb-2 uppercase tracking-wider">Problem</p>
-            <h2 className="font-black text-3xl md:text-4xl text-[#1e2235] leading-tight">
+            <p className="text-[#6bb8d4] font-semibold text-xs mb-2 uppercase tracking-wider">Problem</p>
+            <h2 className="font-black text-2xl md:text-3xl text-[#1e2235] leading-tight">
               보안 정보,
               <br />
               제대로 보고 계신가요?
@@ -86,8 +86,8 @@ export default function ProblemSection() {
               transition={{ delay: i * 0.1, duration: 0.5 }}
             >
               {icon}
-              <p className="font-bold text-[22px] text-[#1e2235]">{title}</p>
-              <p className="font-normal text-[15px] leading-[1.65] text-[#3d4f6e]">{description}</p>
+              <p className="font-bold text-base text-[#1e2235]">{title}</p>
+              <p className="font-normal text-sm leading-[1.65] text-[#3d4f6e]">{description}</p>
             </motion.div>
           ))}
         </div>

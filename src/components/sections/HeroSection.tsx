@@ -43,10 +43,10 @@ export default function HeroSection() {
             transition={{ delay: 0.1, duration: 0.5 }}
           >
             <span className="w-2 h-2 rounded-full bg-[#6bb8d4] inline-block" />
-            <span className="text-[#6bb8d4] text-sm font-medium">매일 아침, 보안 브리핑</span>
+            <span className="text-[#6bb8d4] text-xs font-medium">매일 아침, 보안 브리핑</span>
           </motion.div>
 
-          <h1 className="font-black text-4xl md:text-5xl lg:text-6xl leading-tight text-white mb-6">
+          <h1 className="font-black text-3xl md:text-4xl lg:text-5xl leading-tight text-white mb-5">
             복잡한 보안 이슈,
             <br />
             <span className="text-[#6bb8d4]">하루보안</span>이
@@ -54,22 +54,22 @@ export default function HeroSection() {
             쉽게 풀어드려요
           </h1>
 
-          <p className="text-lg leading-relaxed mb-10 max-w-lg mx-auto md:mx-0" style={{ color: "#8A9BBD" }}>
+          <p className="text-base leading-relaxed mb-8 max-w-lg mx-auto md:mx-0" style={{ color: "#8A9BBD" }}>
             AI가 매일 보안 뉴스를 분석해
             <br className="hidden md:inline" />
             나의 직군에 맞는 보고서로 전달합니다
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
             <button
               onClick={() => scrollTo("cta")}
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-[#1e2235] text-base bg-[#6bb8d4] transition-all hover:brightness-110 active:scale-95"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-[#1e2235] text-sm bg-[#6bb8d4] transition-all hover:brightness-110 active:scale-95"
             >
               무료로 시작하기
             </button>
             <button
               onClick={() => scrollTo("problem")}
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base border-2 transition-all hover:bg-white/5"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-sm border-2 transition-all hover:bg-white/5"
               style={{ color: "#6bb8d4", borderColor: "rgba(107,184,212,0.4)" }}
             >
               서비스 알아보기

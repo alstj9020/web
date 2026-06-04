@@ -108,11 +108,11 @@ export default function CTASection() {
             viewport={{ once: true }}
             transition={{ delay: 0.15, duration: 0.6 }}
           >
-            <p className="text-[#6bb8d4] font-semibold text-sm mb-2 uppercase tracking-wider">무료 구독</p>
-            <h2 className="font-black text-2xl md:text-[40px] leading-[1.4] text-[#f5f6f8] text-center mb-3">
+            <p className="text-[#6bb8d4] font-semibold text-xs mb-2 uppercase tracking-wider">무료 구독</p>
+            <h2 className="font-black text-xl md:text-[28px] leading-[1.4] text-[#f5f6f8] text-center mb-3">
               오늘부터 하루보안 받아보기
             </h2>
-            <p className="font-normal text-base md:text-[18px] text-center mb-8" style={{ color: "#8A9BBD" }}>
+            <p className="font-normal text-sm md:text-base text-center mb-8" style={{ color: "#8A9BBD" }}>
               매일 아침, 나에게 맞는 보안 브리핑을 무료로 받으세요.
             </p>
           </motion.div>
@@ -120,13 +120,13 @@ export default function CTASection() {
           <div className="flex flex-col gap-5 items-center">
             {/* 직군 선택 */}
             <div className="flex flex-col gap-3 items-center justify-center pt-2">
-              <p className="font-normal text-[#a8b8d0] text-[14px]">직군을 선택해 주세요</p>
+              <p className="font-normal text-[#a8b8d0] text-[13px]">직군을 선택해 주세요</p>
               <div className="flex flex-wrap gap-3 items-center justify-center">
                 {AUDIENCE_OPTIONS.map((option) => (
                   <button
                     key={option}
                     onClick={() => { setSelectedAudience(option); setSelectedTopics([]); }}
-                    className={`px-5 py-[10px] rounded-full font-bold text-[14px] cursor-pointer transition-colors ${
+                    className={`px-4 py-2 rounded-full font-bold text-[13px] cursor-pointer transition-colors ${
                       selectedAudience === option
                         ? "bg-[#6bb8d4] text-[#1e2235]"
                         : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
@@ -141,13 +141,13 @@ export default function CTASection() {
             {/* 관심 주제 선택 — 직군 선택 후 표시 */}
             {selectedAudience && (
               <div className="flex flex-col gap-3 items-center justify-center">
-                <p className="font-normal text-[#a8b8d0] text-[14px]">관심 주제를 선택해 주세요</p>
+                <p className="font-normal text-[#a8b8d0] text-[13px]">관심 주제를 선택해 주세요</p>
                 <div className="flex flex-wrap gap-3 items-center justify-center">
                   {TOPICS_BY_AUDIENCE[selectedAudience].map((topic) => (
                     <button
                       key={topic}
                       onClick={() => toggleTopic(topic)}
-                      className={`px-5 py-[10px] rounded-full font-medium text-[14px] cursor-pointer transition-colors ${
+                      className={`px-4 py-2 rounded-full font-medium text-[13px] cursor-pointer transition-colors ${
                         selectedTopics.includes(topic)
                           ? "bg-[#6bb8d4] text-[#1e2235]"
                           : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
@@ -162,13 +162,13 @@ export default function CTASection() {
 
             {/* 시간 선택 */}
             <div className="flex flex-col gap-3 items-center justify-center">
-              <p className="font-normal text-[#a8b8d0] text-[14px]">받을 시간을 선택해 주세요</p>
+              <p className="font-normal text-[#a8b8d0] text-[13px]">받을 시간을 선택해 주세요</p>
               <div className="flex flex-wrap gap-3 items-center justify-center">
                 {TIME_OPTIONS.map((time) => (
                   <button
                     key={time}
                     onClick={() => setSelectedTime(time)}
-                    className={`px-5 py-[10px] rounded-3xl font-medium text-[14px] text-[#e8eaed] cursor-pointer transition-colors ${
+                    className={`px-4 py-2 rounded-3xl font-medium text-[13px] text-[#e8eaed] cursor-pointer transition-colors ${
                       selectedTime === time
                         ? "bg-[#6bb8d4]"
                         : "border-[1.5px] border-[rgba(107,184,212,0.5)] hover:border-[#6bb8d4]"
@@ -195,7 +195,7 @@ export default function CTASection() {
                 disabled={loading}
                 className="bg-[#6bb8d4] flex h-14 items-center justify-center px-8 rounded-xl w-full cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <p className="font-bold text-[18px] text-[#1e2235]">
+                <p className="font-bold text-[15px] text-[#1e2235]">
                   {loading ? "구독 처리 중..." : "무료로 구독 시작하기"}
                 </p>
               </button>
