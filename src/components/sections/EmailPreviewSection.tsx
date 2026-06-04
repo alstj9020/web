@@ -107,8 +107,8 @@ export default function EmailPreviewSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <p className="font-medium text-[#6bb8d4] text-[11px] tracking-[0.65px] uppercase">Email Preview</p>
-          <h2 className="font-bold text-[#1e2235] text-2xl md:text-3xl">이런 보고서를 받게 돼요</h2>
+          <p className="font-semibold text-[#6bb8d4] text-xs uppercase tracking-wider">Email Preview</p>
+          <h2 className="font-black text-[#1e2235] text-2xl md:text-3xl">이런 보고서를 받게 돼요</h2>
           <p className="text-[#3d4f6e] text-sm md:text-[15px]">
             직군에 따라 다른 시각으로 같은 보안 이슈를 전달합니다
           </p>
