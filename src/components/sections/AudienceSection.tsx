@@ -22,7 +22,7 @@ function BulletPoint({ text }: { text: string }) {
   return (
     <div className="flex gap-[10px] items-center">
       <div className="w-2 h-2 rounded-full bg-[#6bb8d4] shrink-0" />
-      <p className="font-normal text-[15px] text-[#3d4f6e]">{text}</p>
+      <p className="font-normal text-[12px] lg:text-[15px] text-[#3d4f6e]">{text}</p>
     </div>
   );
 }
@@ -30,7 +30,7 @@ function BulletPoint({ text }: { text: string }) {
 function AudienceCard({ badge, badgeBg, iconSrc, iconAlt, title, bullets, highlighted = false, delay }: AudienceCardProps) {
   return (
     <motion.div
-      className={`bg-[#f5f6f8] flex flex-col gap-[18px] items-start px-7 py-8 rounded-2xl w-full ${
+      className={`bg-[#f5f6f8] flex flex-col gap-3 md:gap-3 lg:gap-[18px] items-start px-4 py-5 md:px-5 md:py-6 lg:px-7 lg:py-8 rounded-2xl w-full ${
         highlighted ? "border-2 border-[#6bb8d4]" : "border border-[#e8eaed]"
       }`}
       style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
@@ -39,17 +39,17 @@ function AudienceCard({ badge, badgeBg, iconSrc, iconAlt, title, bullets, highli
       viewport={{ once: true }}
       transition={{ delay, duration: 0.55 }}
     >
-      <div className="px-3 py-1.5 rounded-lg shrink-0" style={{ background: badgeBg }}>
-        <p className="font-bold text-[13px] text-[#1e2235]">{badge}</p>
+      <div className="px-2.5 py-1 rounded-lg shrink-0" style={{ background: badgeBg }}>
+        <p className="font-bold text-[12px] text-[#1e2235]">{badge}</p>
       </div>
 
-      <div className="relative size-10 shrink-0">
+      <div className="relative size-8 md:size-8 lg:size-10 shrink-0">
         <Image src={iconSrc} alt={iconAlt} fill className="object-contain" />
       </div>
 
-      <p className="font-bold text-[20px] leading-[1.4] text-[#1e2235]">{title}</p>
+      <p className="font-bold text-[15px] md:text-[15px] lg:text-[20px] leading-[1.4] text-[#1e2235]">{title}</p>
 
-      <div className="flex flex-col gap-[18px]">
+      <div className="flex flex-col gap-2 lg:gap-[18px]">
         {bullets.map((b, i) => (
           <BulletPoint key={i} text={b.text} />
         ))}
@@ -76,7 +76,7 @@ export default function AudienceSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[1104px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 w-full max-w-[1104px] mx-auto">
           <AudienceCard
             badge="일반인"
             badgeBg="#6bb8d4"
