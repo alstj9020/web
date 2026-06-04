@@ -50,15 +50,26 @@ body {
 }
 
 @media (max-width: 767px) {
-  .snap-container {
+  /* 모바일: 루트 스크롤로 전환, 컨테이너는 일반 div */
+  html {
     scroll-snap-type: y proximity;
-    overflow-y: auto;
+    scroll-padding-top: 4rem; /* 고정 NavBar 높이 보정 */
   }
+
+  .snap-container {
+    height: auto;
+    overflow-y: visible;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    overscroll-behavior-y: auto;
+  }
+
   .snap-section {
     height: auto;
     overflow: visible;
     scroll-snap-stop: normal;
   }
+
   .snap-section-cta {
     min-height: auto;
     scroll-snap-stop: normal;
