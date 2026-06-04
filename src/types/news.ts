@@ -1,11 +1,13 @@
-/** S3 enriched 배치 파일 내 개별 아이템 스키마 */
+/** DynamoDB haruboan-db 테이블 아이템 스키마 */
 export interface ProcessedNews {
   id: string;
   title: string;
+  title_ko?: string;
+  source: string;
   source_url: string;
   published_at: string;
+  fetched_at: string;
   summary: string;
-  language: string;
   severity: {
     label: string;
     cvss_score: number | null;
@@ -26,16 +28,16 @@ export interface ProcessedNews {
     ransomware_known: boolean;
   };
   tags: {
-    categories: string[];
-    cwe: { id: string; name: string }[];
     attack_vectors: string[];
     tech_stack: string[];
     topics: string[];
   };
   action: {
-    required_action: string | null;
-    remediation: string;
-    references: { label: string; url: string }[];
+    priority: string;
+    steps: string[];
+    target: string[];
+    timeline: string;
+    type: string;
   };
   audience: {
     scores: { general: number; developer: number; security: number };
@@ -43,16 +45,8 @@ export interface ProcessedNews {
     confidence: number;
     recommended_for: string[];
     reason: string;
+    developer_roles: string[];
   };
-}
-
-/** S3 enriched 배치 파일 최상위 구조 */
-export interface BatchEnrichedFile {
-  source: string;
-  enriched_at: string;
-  model: string;
-  count: number;
-  items: ProcessedNews[];
 }
 
 export type SeverityLabel = "Critical" | "High" | "Medium" | "Low" | "Info";

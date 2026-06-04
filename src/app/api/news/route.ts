@@ -1,94 +1,35 @@
 import { NextResponse } from "next/server";
 import {
-  listEnrichedKeys,
-  fetchEnrichedBatch,
+  scanAllNews,
   getSourceName,
   mapSeverity,
   SEVERITY_ORDER,
-  type TaggedNews,
-} from "@/lib/s3News";
-import type { NewsDisplayItem, AudienceLabel } from "@/types/news";
+} from "@/lib/dynamoNews";
+import type { NewsDisplayItem, AudienceLabel, ProcessedNews } from "@/types/news";
 
 export const revalidate = 300;
-
-/** 소스별 최신 배치 파일을 최대 이 수만큼 가져옴 */
-const MAX_BATCH_FILES = 5;
 
 const AUDIENCE_MAP: Record<string, AudienceLabel> = {
   general: "일반인", developer: "개발자", security: "보안직군",
 };
 
-/** CVE ID 공유 여부 기준 중복 그룹핑 */
-function deduplicateByCve(items: TaggedNews[]): TaggedNews[][] {
-  const cveToGroup = new Map<string, string>();
-  const groups = new Map<string, TaggedNews[]>();
-  const noCveGroups: TaggedNews[][] = [];
-
-  for (const item of items) {
-    const cveIds = item.identifiers.cve_ids;
-
-    if (cveIds.length === 0) {
-      noCveGroups.push([item]);
-      continue;
-    }
-
-    let groupKey: string | undefined;
-    for (const cve of cveIds) {
-      if (cveToGroup.has(cve)) { groupKey = cveToGroup.get(cve)!; break; }
-    }
-
-    if (!groupKey) {
-      groupKey = cveIds[0];
-      groups.set(groupKey, []);
-    }
-
-    groups.get(groupKey)!.push(item);
-    for (const cve of cveIds) cveToGroup.set(cve, groupKey);
-  }
-
-  return [...groups.values(), ...noCveGroups];
-}
-
-function mergeGroup(group: TaggedNews[]): TaggedNews {
-  const best = group.reduce((a, b) => {
-    const aOrd = SEVERITY_ORDER[a.severity.label] ?? 5;
-    const bOrd = SEVERITY_ORDER[b.severity.label] ?? 5;
-    if (aOrd !== bOrd) return aOrd < bOrd ? a : b;
-    return (a.severity.cvss_score ?? 0) >= (b.severity.cvss_score ?? 0) ? a : b;
-  });
-
-  const seen = new Set<string>();
-  const mergedAffected = group
-    .flatMap((item) => item.affected)
-    .filter((a) => {
-      const k = `${a.vendor}|${a.product}`;
-      if (seen.has(k)) return false;
-      seen.add(k);
-      return true;
-    });
-
-  return { ...best, affected: mergedAffected };
-}
-
-function toDisplayItem(item: TaggedNews, sourceCount: number): NewsDisplayItem {
-  const allCveIds = [...new Set(item.identifiers.cve_ids)];
-
+function toDisplayItem(item: ProcessedNews): NewsDisplayItem {
+  const cveIds = [...new Set(item.identifiers.cve_ids)];
   const recommendedFor = (item.audience.recommended_for ?? [])
     .map((a) => AUDIENCE_MAP[a])
     .filter(Boolean) as AudienceLabel[];
-
   const primary: AudienceLabel = AUDIENCE_MAP[item.audience.primary] ?? "보안직군";
 
   return {
-    id: item.id || allCveIds[0] || item._key,
-    title: item.title,
+    id: item.id,
+    title: item.title_ko ?? item.title,
     excerpt: item.summary,
     severity: mapSeverity(item.severity.label),
     cvss: item.severity.cvss_score,
-    cveIds: allCveIds,
-    action: item.action.remediation ?? item.action.required_action ?? "",
-    source: getSourceName(item._source),
-    sourceCount,
+    cveIds,
+    action: item.action.steps[0] ?? "",
+    source: getSourceName(item.source),
+    sourceCount: 1,
     audience: primary,
     recommendedFor: recommendedFor.length > 0 ? recommendedFor : [primary],
     affected: item.affected.map((a) => ({
@@ -98,38 +39,27 @@ function toDisplayItem(item: TaggedNews, sourceCount: number): NewsDisplayItem {
     })),
     kevListed: item.identifiers.kev_listed,
     ransomwareKnown: item.identifiers.ransomware_known,
-    publishedAt: item.published_at ?? item._enriched_at,
+    publishedAt: item.published_at,
   };
 }
 
 export async function GET() {
   try {
-    const allEntries = await listEnrichedKeys();
+    const items = await scanAllNews();
 
-    if (allEntries.length === 0) {
+    if (items.length === 0) {
       return NextResponse.json([]);
     }
 
-    // 최신 배치 파일 MAX_BATCH_FILES개 선택
-    const topEntries = allEntries
-      .sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime())
-      .slice(0, MAX_BATCH_FILES);
-
-    // 각 배치 파일에서 아이템 배열 추출 후 flatten
-    const allItems = (await Promise.all(topEntries.map(fetchEnrichedBatch))).flat();
-
-    if (allItems.length === 0) {
-      return NextResponse.json([]);
-    }
-
-    const groups = deduplicateByCve(allItems);
-    const displayItems = groups
-      .map((group) => toDisplayItem(mergeGroup(group), group.length))
-      .sort(
-        (a, b) =>
+    const displayItems = items
+      .map(toDisplayItem)
+      .sort((a, b) => {
+        const severityDiff =
           (SEVERITY_ORDER[a.severity.toLowerCase()] ?? 5) -
-          (SEVERITY_ORDER[b.severity.toLowerCase()] ?? 5)
-      );
+          (SEVERITY_ORDER[b.severity.toLowerCase()] ?? 5);
+        if (severityDiff !== 0) return severityDiff;
+        return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+      });
 
     return NextResponse.json(displayItems);
   } catch (error) {

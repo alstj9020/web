@@ -1,37 +1,30 @@
 import { NextResponse } from "next/server";
 import {
-  listEnrichedKeys,
-  fetchEnrichedBatch,
+  scanAllNews,
   getSourceName,
   mapSeverity,
   isToday,
-  type TaggedNews,
-  type EnrichedEntry,
-} from "@/lib/s3News";
+} from "@/lib/dynamoNews";
 import type { DashboardStats } from "@/types/news";
 
 export const revalidate = 300;
 
-const MAX_BATCH_FILES = 10;
-
 export async function GET() {
   try {
-    const allEntries = await listEnrichedKeys();
+    const allItems = await scanAllNews();
 
-    if (allEntries.length === 0) {
+    if (allItems.length === 0) {
       return NextResponse.json(emptyStats());
     }
 
-    // 소스별 현황 — JSON 읽기 불필요, S3 메타데이터만 활용
+    // 소스별 현황 — item.source + fetched_at 기준
     const sourceMap = new Map<string, { count: number; lastSeen: Date }>();
-    for (const entry of allEntries) {
-      const curr = sourceMap.get(entry.source);
-      sourceMap.set(entry.source, {
+    for (const item of allItems) {
+      const lastSeen = new Date(item.fetched_at);
+      const curr = sourceMap.get(item.source);
+      sourceMap.set(item.source, {
         count: (curr?.count ?? 0) + 1,
-        lastSeen:
-          curr && curr.lastSeen >= entry.lastModified
-            ? curr.lastSeen
-            : entry.lastModified,
+        lastSeen: curr && curr.lastSeen >= lastSeen ? curr.lastSeen : lastSeen,
       });
     }
 
@@ -45,26 +38,8 @@ export async function GET() {
       })
     );
 
-    // 최신 배치 파일들 읽기
-    const topEntries = allEntries
-      .sort((a, b) => b.lastModified.getTime() - a.lastModified.getTime())
-      .slice(0, MAX_BATCH_FILES);
-
-    // 배치 파일별 fetch 결과를 (배치메타 + 아이템[]) 쌍으로 유지
-    const batches: { entry: EnrichedEntry; items: TaggedNews[] }[] = await Promise.all(
-      topEntries.map(async (entry) => ({
-        entry,
-        items: await fetchEnrichedBatch(entry),
-      }))
-    );
-
-    // 오늘(KST) enriched_at인 배치의 아이템 수 합산
-    const collectedToday = batches
-      .filter(({ entry }) => isToday(entry.lastModified))
-      .reduce((sum, { items }) => sum + items.length, 0);
-
-    // 전체 아이템 flatten
-    const allItems = batches.flatMap(({ items }) => items);
+    // 오늘(KST) fetched_at인 아이템 수
+    const collectedToday = allItems.filter((item) => isToday(item.fetched_at)).length;
 
     // severity 분포 집계
     const severityDist: DashboardStats["severityDist"] = {
@@ -93,10 +68,10 @@ export async function GET() {
       .slice(0, 10)
       .map((item) => ({
         cveId: item.identifiers.cve_ids[0],
-        title: item.title,
+        title: item.title_ko ?? item.title,
         cvss: item.severity.cvss_score,
         severity: mapSeverity(item.severity.label),
-        source: getSourceName(item._source),
+        source: getSourceName(item.source),
       }));
 
     return NextResponse.json({
