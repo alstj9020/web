@@ -51,15 +51,17 @@ body {
 
 @media (max-width: 767px) {
   .snap-container {
-    scroll-snap-type: none;
+    scroll-snap-type: y proximity;
     overflow-y: auto;
   }
   .snap-section {
     height: auto;
     overflow: visible;
+    scroll-snap-stop: normal;
   }
   .snap-section-cta {
     min-height: auto;
+    scroll-snap-stop: normal;
   }
 }
 
