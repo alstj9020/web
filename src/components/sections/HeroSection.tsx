@@ -5,13 +5,7 @@ import { motion } from "framer-motion";
 
 export default function HeroSection() {
   const scrollTo = (id: string) => {
-    const container = document.querySelector(".snap-container");
-    const target = document.getElementById(id);
-    if (container && target) {
-      const containerRect = container.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-      container.scrollBy({ top: targetRect.top - containerRect.top, behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
