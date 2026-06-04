@@ -39,8 +39,7 @@ body {
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  height: calc(100dvh - 4rem);
-  overflow: hidden;
+  min-height: calc(100dvh - 4rem);
 }
 
 .snap-section-cta {

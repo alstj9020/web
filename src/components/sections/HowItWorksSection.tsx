@@ -34,8 +34,8 @@ export default function HowItWorksSection() {
       className="snap-section flex items-center justify-center bg-[#f5f6f8]"
       aria-label="작동 방식"
     >
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-20">
-        <div className="flex flex-col md:flex-row items-center gap-10 mb-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-10 md:py-16 lg:py-20">
+        <div className="flex flex-col md:flex-row items-center gap-8 mb-8 md:mb-14">
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}

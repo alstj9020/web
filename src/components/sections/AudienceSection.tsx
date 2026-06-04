@@ -30,7 +30,7 @@ function BulletPoint({ text }: { text: string }) {
 function AudienceCard({ badge, badgeBg, iconSrc, iconAlt, title, bullets, highlighted = false, delay }: AudienceCardProps) {
   return (
     <motion.div
-      className={`bg-[#f5f6f8] flex flex-col gap-[18px] items-start px-7 py-8 rounded-2xl w-full lg:w-[352px] ${
+      className={`bg-[#f5f6f8] flex flex-col gap-[18px] items-start px-7 py-8 rounded-2xl w-full ${
         highlighted ? "border-2 border-[#6bb8d4]" : "border border-[#e8eaed]"
       }`}
       style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
@@ -61,9 +61,9 @@ function AudienceCard({ badge, badgeBg, iconSrc, iconAlt, title, bullets, highli
 export default function AudienceSection() {
   return (
     <section className="snap-section flex items-center justify-center bg-[#e8eaed]" aria-label="직군별 서비스">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-20">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-10 md:py-16 lg:py-20">
         <motion.div
-          className="flex flex-col gap-3 items-center text-center mb-14"
+          className="flex flex-col gap-3 items-center text-center mb-8 md:mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -76,7 +76,7 @@ export default function AudienceSection() {
           </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row gap-6 items-stretch w-full max-w-[1104px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[1104px] mx-auto">
           <AudienceCard
             badge="일반인"
             badgeBg="#6bb8d4"

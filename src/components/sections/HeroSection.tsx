@@ -22,7 +22,7 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full flex flex-col md:flex-row items-center gap-12 md:gap-20 py-24">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full flex flex-col md:flex-row items-center gap-8 md:gap-16 lg:gap-20 py-10 md:py-16 lg:py-24">
         {/* 텍스트 */}
         <motion.div
           className="flex-1 text-center md:text-left"

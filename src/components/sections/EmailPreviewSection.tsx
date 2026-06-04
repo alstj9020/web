@@ -99,9 +99,9 @@ export default function EmailPreviewSection() {
 
   return (
     <section className="snap-section flex items-center justify-center bg-[#e8eaed]" aria-label="이메일 예시">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-20">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-10 md:py-16 lg:py-20">
         <motion.div
-          className="flex flex-col gap-3 items-center text-center mb-14"
+          className="flex flex-col gap-3 items-center text-center mb-8 md:mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

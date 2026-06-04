@@ -47,7 +47,7 @@ export default function ProblemSection() {
   return (
     <section id="problem" className="snap-section flex items-center justify-center bg-[#f5f6f8]" aria-label="문제점">
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-12">
-        <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
+        <div className="flex flex-col md:flex-row items-center gap-8 mb-8 md:mb-10">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
