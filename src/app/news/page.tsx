@@ -29,7 +29,7 @@ function NewsCard({ item }: { item: NewsDisplayItem }) {
           <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold ${SEVERITY_STYLE[item.severity]}`}>
             {item.severity}
           </span>
-          {item.cvss !== null && (
+          {item.cvss != null && (
             <span className="text-[#a8d8ea] text-[11px] font-medium">CVSS {item.cvss}</span>
           )}
           {item.kevListed && (
