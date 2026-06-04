@@ -45,7 +45,7 @@ const problems = [
 
 export default function ProblemSection() {
   return (
-    <section className="snap-section flex items-center justify-center bg-[#f5f6f8]" aria-label="문제점">
+    <section id="problem" className="snap-section flex items-center justify-center bg-[#f5f6f8]" aria-label="문제점">
       <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-12">
         <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
           <motion.div

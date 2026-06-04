@@ -45,6 +45,7 @@ body {
 
 .snap-section-cta {
   scroll-snap-align: start;
+  scroll-snap-stop: always;
   min-height: calc(100dvh - 4rem);
 }
 

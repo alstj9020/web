@@ -8,7 +8,9 @@ export default function HeroSection() {
     const container = document.querySelector(".snap-container");
     const target = document.getElementById(id);
     if (container && target) {
-      container.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      container.scrollBy({ top: targetRect.top - containerRect.top, behavior: "smooth" });
     }
   };
 
@@ -72,7 +74,7 @@ export default function HeroSection() {
               무료로 시작하기
             </button>
             <button
-              onClick={() => scrollTo("how-it-works")}
+              onClick={() => scrollTo("problem")}
               className="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-base border-2 transition-all hover:bg-white/5"
               style={{ color: "#6bb8d4", borderColor: "rgba(107,184,212,0.4)" }}
             >
