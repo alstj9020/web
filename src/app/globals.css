@@ -48,11 +48,11 @@ body {
   min-height: calc(100dvh - 4rem);
 }
 
+/* 모바일: 참조 프로젝트와 동일하게 스냅 해제, 자연 스크롤 */
 @media (max-width: 767px) {
-  /* 모바일: 루트 스크롤로 전환, 컨테이너는 일반 div */
   html {
-    scroll-snap-type: y proximity;
-    scroll-padding-top: 4rem; /* 고정 NavBar 높이 보정 */
+    scroll-snap-type: none;
+    scroll-padding-top: 0;
   }
 
   .snap-container {
@@ -64,14 +64,12 @@ body {
   }
 
   .snap-section {
-    height: auto;
+    min-height: auto;
     overflow: visible;
-    scroll-snap-stop: normal;
   }
 
   .snap-section-cta {
     min-height: auto;
-    scroll-snap-stop: normal;
   }
 }
 

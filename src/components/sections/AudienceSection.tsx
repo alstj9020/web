@@ -3,60 +3,38 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-interface BulletItem {
-  text: string;
-}
-
-interface AudienceCardProps {
-  badge: string;
-  badgeBg: string;
-  iconSrc: string;
-  iconAlt: string;
-  title: string;
-  bullets: BulletItem[];
-  highlighted?: boolean;
-  delay: number;
-}
-
-function BulletPoint({ text }: { text: string }) {
-  return (
-    <div className="flex gap-[10px] items-center">
-      <div className="w-2 h-2 rounded-full bg-[#6bb8d4] shrink-0" />
-      <p className="font-normal text-[12px] lg:text-[15px] text-[#3d4f6e]">{text}</p>
-    </div>
-  );
-}
-
-function AudienceCard({ badge, badgeBg, iconSrc, iconAlt, title, bullets, highlighted = false, delay }: AudienceCardProps) {
-  return (
-    <motion.div
-      className={`bg-[#f5f6f8] flex flex-col gap-3 md:gap-3 lg:gap-[18px] items-start px-4 py-5 md:px-5 md:py-6 lg:px-7 lg:py-8 rounded-2xl w-full ${
-        highlighted ? "border-2 border-[#6bb8d4]" : "border border-[#e8eaed]"
-      }`}
-      style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay, duration: 0.55 }}
-    >
-      <div className="px-2.5 py-1 rounded-lg shrink-0" style={{ background: badgeBg }}>
-        <p className="font-bold text-[12px] text-[#1e2235]">{badge}</p>
-      </div>
-
-      <div className="relative size-8 md:size-8 lg:size-10 shrink-0">
-        <Image src={iconSrc} alt={iconAlt} fill className="object-contain" />
-      </div>
-
-      <p className="font-bold text-[15px] md:text-[15px] lg:text-[20px] leading-[1.4] text-[#1e2235]">{title}</p>
-
-      <div className="flex flex-col gap-2 lg:gap-[18px]">
-        {bullets.map((b, i) => (
-          <BulletPoint key={i} text={b.text} />
-        ))}
-      </div>
-    </motion.div>
-  );
-}
+const audiences = [
+  {
+    badge: "일반인",
+    badgeBg: "#6bb8d4",
+    iconSrc: "/images/icon-person.svg",
+    iconAlt: "일반인 아이콘",
+    title: "쉽게 풀어쓴\n보안 뉴스",
+    desc: "어려운 기술 용어 없이, 내 일상과 연결된 보안 이슈를 쉬운 말로 전달합니다.",
+    bullets: ["어려운 용어 없이 핵심만", "내 계정·기기에 미치는 영향", "지금 해야 할 행동 정리"],
+    highlighted: false,
+  },
+  {
+    badge: "개발자",
+    badgeBg: "#a8d8ea",
+    iconSrc: "/images/icon-terminal.svg",
+    iconAlt: "개발자 아이콘",
+    title: "코드 관점의\n위협 분석",
+    desc: "내 스택과 관련된 취약점, 최신 패치, 보안 업데이트를 코드 수준으로 안내합니다.",
+    bullets: ["관련 라이브러리·프레임워크", "취약점 패턴과 재현 예시", "패치·마이그레이션 가이드"],
+    highlighted: true,
+  },
+  {
+    badge: "보안직군",
+    badgeBg: "#6bb8d4",
+    iconSrc: "/images/icon-shield.svg",
+    iconAlt: "보안직군 아이콘",
+    title: "실무용\n상세 리포트",
+    desc: "위협 행위자 프로파일, IOC, MITRE ATT&CK 매핑까지 실무에 필요한 정보를 제공합니다.",
+    bullets: ["CVE·IOC·CVSS 스코어", "공격 체인 및 방어 관점", "조직 대응 체크리스트"],
+    highlighted: false,
+  },
+];
 
 export default function AudienceSection() {
   return (
@@ -76,47 +54,45 @@ export default function AudienceSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 w-full max-w-[1104px] mx-auto">
-          <AudienceCard
-            badge="일반인"
-            badgeBg="#6bb8d4"
-            iconSrc="/images/icon-person.svg"
-            iconAlt="일반인 아이콘"
-            title="쉽게 풀어쓴 보안 뉴스"
-            bullets={[
-              { text: "어려운 용어 없이 핵심만" },
-              { text: "내 계정·기기에 미치는 영향" },
-              { text: "지금 해야 할 행동 정리" },
-            ]}
-            delay={0}
-          />
-          <AudienceCard
-            badge="개발자"
-            badgeBg="#a8d8ea"
-            iconSrc="/images/icon-terminal.svg"
-            iconAlt="개발자 아이콘"
-            title="코드 관점의 위협 분석"
-            bullets={[
-              { text: "관련 라이브러리·프레임워크" },
-              { text: "취약점 패턴과 재현 예시" },
-              { text: "패치·마이그레이션 가이드" },
-            ]}
-            highlighted
-            delay={0.12}
-          />
-          <AudienceCard
-            badge="보안직군"
-            badgeBg="#6bb8d4"
-            iconSrc="/images/icon-shield.svg"
-            iconAlt="보안직군 아이콘"
-            title="실무용 상세 리포트"
-            bullets={[
-              { text: "CVE·IOC·CVSS 스코어" },
-              { text: "공격 체인 및 방어 관점" },
-              { text: "조직 대응 체크리스트" },
-            ]}
-            delay={0.24}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[1104px] mx-auto">
+          {audiences.map(({ badge, badgeBg, iconSrc, iconAlt, title, desc, bullets, highlighted }, i) => (
+            <motion.div
+              key={i}
+              className={`bg-[#f5f6f8] rounded-2xl p-8 flex flex-col ${
+                highlighted ? "border-2 border-[#6bb8d4]" : "border border-[#e8eaed]"
+              }`}
+              style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.12, duration: 0.55 }}
+            >
+              {/* 아이콘 + 배지 가로 배치 (참조 프로젝트 레이아웃) */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="relative size-[44px] shrink-0">
+                  <Image src={iconSrc} alt={iconAlt} fill className="object-contain" />
+                </div>
+                <span
+                  className="px-3 py-1 rounded-lg text-sm font-semibold text-[#1e2235]"
+                  style={{ background: badgeBg }}
+                >
+                  {badge}
+                </span>
+              </div>
+
+              <h3 className="text-xl font-bold text-[#1e2235] mb-3 whitespace-pre-line">{title}</h3>
+              <p className="text-[#3d4f6e] text-sm leading-relaxed mb-6">{desc}</p>
+
+              <ul className="mt-auto space-y-2">
+                {bullets.map((pt, j) => (
+                  <li key={j} className="flex items-center gap-2 text-sm text-[#3d4f6e]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#6bb8d4] flex-shrink-0" />
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
