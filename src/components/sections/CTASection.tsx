@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import { Toast } from "@/components/ui/Toast";
 import { AUDIENCE_OPTIONS, TIME_OPTIONS, TOPICS_BY_AUDIENCE, AudienceType, TimeType } from "@/constants/subscription";
 
@@ -77,103 +78,134 @@ export default function CTASection() {
   }, [email, selectedAudience, selectedTopics, selectedTime, router]);
 
   return (
-    <section id="cta" className="bg-[#1e2235] flex flex-col gap-5 items-center justify-center w-full px-6 md:px-16 lg:px-[120px] py-16 md:py-24">
-      <div className="relative size-[120px] md:size-[140px] shrink-0">
-        <Image src="/images/haru-wink.svg" alt="하루보안 윙크 캐릭터" fill className="object-contain" />
-      </div>
+    <section id="cta" className="snap-section-cta flex flex-col bg-[#1e2235] relative overflow-hidden" aria-label="구독 신청">
+      {/* 배경 그라디언트 */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 50% 60% at 20% 60%, rgba(107,184,212,0.12) 0%, transparent 70%)",
+        }}
+      />
 
-      <h2 className="font-black text-2xl md:text-[40px] leading-[1.4] text-[#f5f6f8] text-center">
-        지금 구독하고, 내일 아침부터 받아보세요
-      </h2>
-      <p className="font-normal text-base md:text-[18px] text-[#a8d8ea] text-center">
-        무료 · 1일 1회 · 언제든 해지 가능
-      </p>
+      <div className="flex-1 flex items-center justify-center relative">
+        <div className="max-w-lg mx-auto px-6 md:px-8 w-full py-10 md:py-14 text-center">
+          <motion.div
+            className="flex justify-center mb-6"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="haru-float relative size-[120px] md:size-[140px]">
+              <Image src="/images/haru-wink.svg" alt="하루보안 윙크 캐릭터" fill className="object-contain" />
+            </div>
+          </motion.div>
 
-      {/* 직군 선택 */}
-      <div className="flex flex-col gap-3 items-center justify-center pt-2">
-        <p className="font-normal text-[#a8b8d0] text-[14px]">직군을 선택해 주세요</p>
-        <div className="flex flex-wrap gap-3 items-center justify-center">
-          {AUDIENCE_OPTIONS.map((option) => (
-            <button
-              key={option}
-              onClick={() => { setSelectedAudience(option); setSelectedTopics([]); }}
-              className={`px-5 py-[10px] rounded-full font-bold text-[14px] cursor-pointer transition-colors ${
-                selectedAudience === option
-                  ? "bg-[#6bb8d4] text-[#1e2235]"
-                  : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
-              }`}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15, duration: 0.6 }}
+          >
+            <p className="text-[#6bb8d4] font-semibold text-xs mb-2 uppercase tracking-wider">무료 구독</p>
+            <h2 className="font-black text-xl md:text-[28px] leading-[1.4] text-[#f5f6f8] text-center mb-3">
+              오늘부터 하루보안 받아보기
+            </h2>
+            <p className="font-normal text-sm md:text-base text-center mb-8" style={{ color: "#8A9BBD" }}>
+              매일 아침, 나에게 맞는 보안 브리핑을 무료로 받으세요.
+            </p>
+          </motion.div>
 
-      {/* 관심 주제 선택 — 직군 선택 후 표시 */}
-      {selectedAudience && (
-        <div className="flex flex-col gap-3 items-center justify-center">
-          <p className="font-normal text-[#a8b8d0] text-[14px]">관심 주제를 선택해 주세요</p>
-          <div className="flex flex-wrap gap-3 items-center justify-center">
-            {TOPICS_BY_AUDIENCE[selectedAudience].map((topic) => (
+          <div className="flex flex-col gap-5 items-center">
+            {/* 직군 선택 */}
+            <div className="flex flex-col gap-3 items-center justify-center pt-2">
+              <p className="font-normal text-[#a8b8d0] text-[13px]">직군을 선택해 주세요</p>
+              <div className="flex flex-wrap gap-3 items-center justify-center">
+                {AUDIENCE_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => { setSelectedAudience(option); setSelectedTopics([]); }}
+                    className={`px-4 py-2 rounded-full font-bold text-[13px] cursor-pointer transition-colors ${
+                      selectedAudience === option
+                        ? "bg-[#6bb8d4] text-[#1e2235]"
+                        : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 관심 주제 선택 — 직군 선택 후 표시 */}
+            {selectedAudience && (
+              <div className="flex flex-col gap-3 items-center justify-center">
+                <p className="font-normal text-[#a8b8d0] text-[13px]">관심 주제를 선택해 주세요</p>
+                <div className="flex flex-wrap gap-3 items-center justify-center">
+                  {TOPICS_BY_AUDIENCE[selectedAudience].map((topic) => (
+                    <button
+                      key={topic}
+                      onClick={() => toggleTopic(topic)}
+                      className={`px-4 py-2 rounded-full font-medium text-[13px] cursor-pointer transition-colors ${
+                        selectedTopics.includes(topic)
+                          ? "bg-[#6bb8d4] text-[#1e2235]"
+                          : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
+                      }`}
+                    >
+                      {topic}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 시간 선택 */}
+            <div className="flex flex-col gap-3 items-center justify-center">
+              <p className="font-normal text-[#a8b8d0] text-[13px]">받을 시간을 선택해 주세요</p>
+              <div className="flex flex-wrap gap-3 items-center justify-center">
+                {TIME_OPTIONS.map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => setSelectedTime(time)}
+                    className={`px-4 py-2 rounded-3xl font-medium text-[13px] text-[#e8eaed] cursor-pointer transition-colors ${
+                      selectedTime === time
+                        ? "bg-[#6bb8d4]"
+                        : "border-[1.5px] border-[rgba(107,184,212,0.5)] hover:border-[#6bb8d4]"
+                    }`}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 구독 폼 */}
+            <div className="bg-[#f5f6f8] flex flex-col gap-2 items-center p-2 rounded-2xl w-full max-w-[416px]">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
+                placeholder="이메일 주소를 입력하세요"
+                className="w-full px-4 py-3 rounded-xl bg-white text-[#1e2235] text-[15px] placeholder:text-[#a8b8d0] border border-[#e8eaed] focus:outline-none focus:border-[#6bb8d4] transition-colors"
+              />
               <button
-                key={topic}
-                onClick={() => toggleTopic(topic)}
-                className={`px-5 py-[10px] rounded-full font-medium text-[14px] cursor-pointer transition-colors ${
-                  selectedTopics.includes(topic)
-                    ? "bg-[#6bb8d4] text-[#1e2235]"
-                    : "border-[1.5px] border-[#3d4f6e] text-[#f5f6f8] hover:border-[#6bb8d4]"
-                }`}
+                onClick={handleSubscribe}
+                disabled={loading}
+                className="bg-[#6bb8d4] flex h-14 items-center justify-center px-8 rounded-xl w-full cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {topic}
+                <p className="font-bold text-[15px] text-[#1e2235]">
+                  {loading ? "구독 처리 중..." : "무료로 구독 시작하기"}
+                </p>
               </button>
-            ))}
+            </div>
           </div>
         </div>
-      )}
-
-      {/* 시간 선택 */}
-      <div className="flex flex-col gap-3 items-center justify-center">
-        <p className="font-normal text-[#a8b8d0] text-[14px]">받을 시간을 선택해 주세요</p>
-        <div className="flex flex-wrap gap-3 items-center justify-center">
-          {TIME_OPTIONS.map((time) => (
-            <button
-              key={time}
-              onClick={() => setSelectedTime(time)}
-              className={`px-5 py-[10px] rounded-3xl font-medium text-[14px] text-[#e8eaed] cursor-pointer transition-colors ${
-                selectedTime === time
-                  ? "bg-[#6bb8d4]"
-                  : "border-[1.5px] border-[rgba(107,184,212,0.5)] hover:border-[#6bb8d4]"
-              }`}
-            >
-              {time}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 구독 폼 */}
-      <div className="bg-[#f5f6f8] flex flex-col gap-2 items-center p-2 rounded-2xl w-full max-w-[416px]">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSubscribe()}
-          placeholder="이메일 주소를 입력하세요"
-          className="w-full px-4 py-3 rounded-xl bg-white text-[#1e2235] text-[15px] placeholder:text-[#a8b8d0] border border-[#e8eaed] focus:outline-none focus:border-[#6bb8d4] transition-colors"
-        />
-        <button
-          onClick={handleSubscribe}
-          disabled={loading}
-          className="bg-[#6bb8d4] flex h-14 items-center justify-center px-8 rounded-xl w-full cursor-pointer hover:opacity-90 transition-opacity disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          <p className="font-bold text-[18px] text-[#1e2235]">
-            {loading ? "구독 처리 중..." : "무료로 구독 시작하기"}
-          </p>
-        </button>
       </div>
 
       {/* 푸터 */}
-      <div className="flex flex-col gap-3 items-center w-full mt-6 pt-6 border-t border-white/10">
+      <div className="flex flex-col gap-3 items-center w-full px-6 md:px-8 py-5 border-t border-white/10 relative">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full max-w-[1280px]">
           <p className="font-bold text-[18px] text-white">하루보안</p>
           <div className="flex flex-wrap gap-4 sm:gap-7 items-center justify-center">

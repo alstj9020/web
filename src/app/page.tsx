@@ -7,13 +7,13 @@ import CTASection from "@/components/sections/CTASection";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center w-full overflow-x-hidden">
+    <div className="snap-container">
       <HeroSection />
       <ProblemSection />
       <AudienceSection />
       <HowItWorksSection />
       <EmailPreviewSection />
       <CTASection />
-    </main>
+    </div>
   );
 }

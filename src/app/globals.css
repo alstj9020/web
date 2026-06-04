@@ -26,3 +26,59 @@ body {
   background: var(--white);
   color: var(--dark);
 }
+
+/* 스냅 스크롤 */
+.snap-container {
+  height: calc(100dvh - 4rem);
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: none;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: calc(100dvh - 4rem);
+}
+
+.snap-section-cta {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: calc(100dvh - 4rem);
+}
+
+/* 모바일: 참조 프로젝트와 동일하게 스냅 해제, 자연 스크롤 */
+@media (max-width: 767px) {
+  html {
+    scroll-snap-type: none;
+    scroll-padding-top: 0;
+  }
+
+  .snap-container {
+    height: auto;
+    overflow-y: visible;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    overscroll-behavior-y: auto;
+  }
+
+  .snap-section {
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .snap-section-cta {
+    min-height: auto;
+  }
+}
+
+/* 캐릭터 플로팅 */
+@keyframes haruFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.haru-float {
+  animation: haruFloat 3s ease-in-out infinite;
+}
