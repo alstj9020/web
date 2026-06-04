@@ -78,7 +78,7 @@ export default function CTASection() {
   }, [email, selectedAudience, selectedTopics, selectedTime, router]);
 
   return (
-    <section id="cta" className="snap-section flex flex-col bg-[#1e2235] relative overflow-hidden" aria-label="구독 신청">
+    <section id="cta" className="snap-section-cta flex flex-col bg-[#1e2235] relative overflow-hidden" aria-label="구독 신청">
       {/* 배경 그라디언트 */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -108,11 +108,12 @@ export default function CTASection() {
             viewport={{ once: true }}
             transition={{ delay: 0.15, duration: 0.6 }}
           >
+            <p className="text-[#6bb8d4] font-semibold text-sm mb-2 uppercase tracking-wider">무료 구독</p>
             <h2 className="font-black text-2xl md:text-[40px] leading-[1.4] text-[#f5f6f8] text-center mb-3">
-              지금 구독하고, 내일 아침부터 받아보세요
+              오늘부터 하루보안 받아보기
             </h2>
-            <p className="font-normal text-base md:text-[18px] text-[#a8d8ea] text-center mb-8">
-              무료 · 1일 1회 · 언제든 해지 가능
+            <p className="font-normal text-base md:text-[18px] text-center mb-8" style={{ color: "#8A9BBD" }}>
+              매일 아침, 나에게 맞는 보안 브리핑을 무료로 받으세요.
             </p>
           </motion.div>
 

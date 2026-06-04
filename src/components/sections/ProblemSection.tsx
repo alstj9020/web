@@ -46,8 +46,8 @@ const problems = [
 export default function ProblemSection() {
   return (
     <section className="snap-section flex items-center justify-center bg-[#f5f6f8]" aria-label="문제점">
-      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-20">
-        <div className="flex flex-col md:flex-row items-center gap-10 mb-16">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 w-full py-12">
+        <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -78,7 +78,7 @@ export default function ProblemSection() {
           {problems.map(({ icon, title, description }, i) => (
             <motion.div
               key={i}
-              className="bg-white rounded-2xl p-8 border border-[#e8eaed] flex flex-col gap-4"
+              className="bg-white rounded-2xl p-6 border border-[#e8eaed] flex flex-col gap-4"
               style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

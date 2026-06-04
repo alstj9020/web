@@ -39,6 +39,12 @@ body {
 .snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  height: calc(100dvh - 4rem);
+  overflow: hidden;
+}
+
+.snap-section-cta {
+  scroll-snap-align: start;
   min-height: calc(100dvh - 4rem);
 }
 
@@ -48,6 +54,10 @@ body {
     overflow-y: auto;
   }
   .snap-section {
+    height: auto;
+    overflow: visible;
+  }
+  .snap-section-cta {
     min-height: auto;
   }
 }
