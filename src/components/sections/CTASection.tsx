@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Toast } from "@/components/ui/Toast";
-import { AUDIENCE_OPTIONS, TIME_OPTIONS, TOPICS_BY_AUDIENCE, AudienceType, TimeType } from "@/constants/subscription";
+import { AUDIENCE_OPTIONS, TIME_OPTIONS, TOPICS_BY_AUDIENCE, AudienceType, TimeType, TopicsAudienceType } from "@/constants/subscription";
 
 export default function CTASection() {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function CTASection() {
       setToast({ message: "직군을 선택해 주세요.", type: "error" });
       return;
     }
-    if (selectedTopics.length === 0) {
+    if (selectedAudience !== "일반인" && selectedTopics.length === 0) {
       setToast({ message: "관심 주제를 하나 이상 선택해 주세요.", type: "error" });
       return;
     }
@@ -138,12 +138,12 @@ export default function CTASection() {
               </div>
             </div>
 
-            {/* 관심 주제 선택 — 직군 선택 후 표시 */}
-            {selectedAudience && (
+            {/* 관심 주제 선택 — 일반인 제외, 직군 선택 후 표시 */}
+            {selectedAudience && selectedAudience !== "일반인" && (
               <div className="flex flex-col gap-3 items-center justify-center">
                 <p className="font-normal text-[#a8b8d0] text-[13px]">관심 주제를 선택해 주세요</p>
                 <div className="flex flex-wrap gap-3 items-center justify-center">
-                  {TOPICS_BY_AUDIENCE[selectedAudience].map((topic) => (
+                  {TOPICS_BY_AUDIENCE[selectedAudience as TopicsAudienceType].map((topic) => (
                     <button
                       key={topic}
                       onClick={() => toggleTopic(topic)}
