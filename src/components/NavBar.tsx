@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const NAV_LINKS = [
-  { label: "홈", href: "/" },
   { label: "뉴스 피드", href: "/news" },
   { label: "대시보드", href: "/dashboard" },
 ];
@@ -34,6 +33,22 @@ export default function NavBar() {
 
         {/* 우측: 데스크탑 네비게이션 */}
         <div className="hidden md:flex items-center gap-8">
+          <Link
+            href="/"
+            className={`font-medium text-[15px] transition-colors ${
+              pathname === "/" ? "text-[#6bb8d4]" : "text-[#a8b8d0] hover:text-white"
+            }`}
+          >
+            홈
+          </Link>
+
+          <Link
+            href="/#cta"
+            className="font-medium text-[13px] px-4 py-1.5 rounded-full border border-[#6bb8d4] text-[#6bb8d4] hover:bg-[#6bb8d4] hover:text-[#1e2235] transition-all duration-200"
+          >
+            구독하기
+          </Link>
+
           {NAV_LINKS.map(({ label, href }) => {
             const isActive = pathname === href;
             return (
@@ -41,9 +56,7 @@ export default function NavBar() {
                 key={href}
                 href={href}
                 className={`font-medium text-[15px] transition-colors ${
-                  isActive
-                    ? "text-[#6bb8d4]"
-                    : "text-[#a8b8d0] hover:text-white"
+                  isActive ? "text-[#6bb8d4]" : "text-[#a8b8d0] hover:text-white"
                 }`}
               >
                 {label}
@@ -79,10 +92,26 @@ export default function NavBar() {
       {/* 모바일 드롭다운 메뉴 */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-200 ${
-          menuOpen ? "max-h-48" : "max-h-0"
+          menuOpen ? "max-h-64" : "max-h-0"
         }`}
       >
         <div className="bg-[#1e2235] border-t border-white/10 px-6 py-3 flex flex-col">
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className={`font-medium text-[15px] py-3 border-b border-white/5 transition-colors ${
+              pathname === "/" ? "text-[#6bb8d4]" : "text-[#a8b8d0] hover:text-white"
+            }`}
+          >
+            홈
+          </Link>
+          <Link
+            href="/#cta"
+            onClick={() => setMenuOpen(false)}
+            className="font-medium text-[15px] py-3 border-b border-white/5 text-[#6bb8d4]"
+          >
+            구독하기
+          </Link>
           {NAV_LINKS.map(({ label, href }) => {
             const isActive = pathname === href;
             return (

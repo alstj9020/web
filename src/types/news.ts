@@ -91,6 +91,7 @@ export interface NewsDisplayItem {
   cveIds: string[];
   action: string;
   source: string;
+  sourceUrl: string;
   sourceCount: number;
   audience: AudienceLabel;
   recommendedFor: AudienceLabel[];
@@ -98,4 +99,5 @@ export interface NewsDisplayItem {
   kevListed: boolean;
   ransomwareKnown: boolean;
   publishedAt: string;
+  techStack: string[];
 }

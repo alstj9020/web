@@ -40,6 +40,8 @@ function toDisplayItem(item: ProcessedNews): NewsDisplayItem {
     kevListed: item.identifiers.kev_listed,
     ransomwareKnown: item.identifiers.ransomware_known,
     publishedAt: item.published_at,
+    techStack: item.tags?.tech_stack ?? [],
+    sourceUrl: item.source_url ?? "",
   };
 }
 
