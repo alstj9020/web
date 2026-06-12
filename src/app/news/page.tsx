@@ -107,10 +107,15 @@ export default function NewsPage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="제목, CVE, 기술스택 검색..."
-                className="w-52 pl-8 pr-3 py-1.5 text-[13px] border border-[#e8eaed] rounded-lg bg-[#f5f6f8] text-[#1e2235] placeholder-[#a8b8d0] focus:outline-none focus:border-[#6bb8d4] transition-colors"
+                placeholder="제목, CVE, 기술스택..."
+                className="w-48 pl-9 pr-3 py-2 text-[13px] border border-[#e8eaed] rounded-xl bg-white text-[#1e2235] placeholder-[#c0ccd8] focus:outline-none focus:border-[#6bb8d4] focus:shadow-[0_0_0_3px_rgba(107,184,212,0.15)] transition-all shadow-sm"
               />
-              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#a8b8d0] text-[13px]">🔍</span>
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#a8b8d0]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              </svg>
+              {searchQuery && (
+                <button onClick={() => setSearchQuery("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#a8b8d0] hover:text-[#3d4f6e] text-[14px] leading-none">✕</button>
+              )}
             </div>
 
             <div className="flex border border-[#e8eaed] rounded-lg overflow-hidden">
@@ -160,7 +165,7 @@ export default function NewsPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="bg-white rounded-xl border border-[#e8eaed] overflow-hidden">
             {filtered.map((item) => (
               <NewsListItem key={item.id} item={item} onClick={setSelectedItem} />
             ))}

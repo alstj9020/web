@@ -36,9 +36,9 @@ export default function NewsDetailModal({ item, onClose }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.97 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed inset-x-4 top-[5vh] bottom-[5vh] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-[680px] bg-white rounded-2xl z-50 overflow-y-auto shadow-2xl"
+            className="fixed inset-x-4 top-[5vh] bottom-[5vh] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-[680px] bg-white rounded-2xl z-50 overflow-hidden shadow-2xl flex flex-col"
           >
-            <div className="bg-[#1e2235] px-6 py-4 flex items-start justify-between sticky top-0 rounded-t-2xl">
+            <div className="bg-[#1e2235] px-6 py-4 flex items-start justify-between shrink-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className={`px-2.5 py-1 rounded-md text-[12px] font-bold ${SEVERITY_STYLE[item.severity]}`}>
                   {item.severity}
@@ -62,6 +62,7 @@ export default function NewsDetailModal({ item, onClose }: Props) {
               </button>
             </div>
 
+            <div className="overflow-y-auto flex-1">
             <div className="p-6 flex flex-col gap-5">
               {item.cveIds.length > 0 && (
                 <div className="flex gap-2 flex-wrap">
@@ -125,6 +126,7 @@ export default function NewsDetailModal({ item, onClose }: Props) {
                   <span className="text-[#8a9bbd] text-[12px]">{item.source}</span>
                 </a>
               )}
+            </div>
             </div>
           </motion.div>
         </>
