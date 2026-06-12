@@ -1,8 +1,14 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+import nodemailer from "nodemailer";
 
-const ses = new SESClient({ region: process.env.AWS_REGION ?? "ap-northeast-2" });
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER ?? "",
+    pass: process.env.GMAIL_APP_PASSWORD ?? "",
+  },
+});
 
-export const SES_FROM = process.env.SES_FROM_EMAIL ?? "";
+export const SES_FROM = process.env.GMAIL_USER ?? "";
 
 export interface NewsletterArticle {
   title: string;
@@ -23,24 +29,12 @@ export async function sendNewsletter({
   audience: string;
   articles: NewsletterArticle[];
 }): Promise<void> {
-  await ses.send(
-    new SendEmailCommand({
-      Source: SES_FROM,
-      Destination: { ToAddresses: [to] },
-      Message: {
-        Subject: {
-          Data: `[하루보안] 오늘의 보안 브리핑`,
-          Charset: "UTF-8",
-        },
-        Body: {
-          Html: {
-            Data: buildHtml({ audience, articles }),
-            Charset: "UTF-8",
-          },
-        },
-      },
-    })
-  );
+  await transporter.sendMail({
+    from: `하루보안 <${SES_FROM}>`,
+    to,
+    subject: `[하루보안] 오늘의 보안 브리핑`,
+    html: buildHtml({ audience, articles }),
+  });
 }
 
 function buildHtml({

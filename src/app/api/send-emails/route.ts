@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
   // 환경변수 누락 조기 확인
   if (!SES_FROM) {
-    return NextResponse.json({ error: "SES_FROM_EMAIL 환경변수가 설정되지 않았습니다." }, { status: 500 });
+    return NextResponse.json({ error: "GMAIL_USER 환경변수가 설정되지 않았습니다." }, { status: 500 });
   }
 
   // 현재 KST 시각으로 대상 deliveryTime 결정
