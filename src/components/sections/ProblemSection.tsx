@@ -3,18 +3,10 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const InfoIcon = () => (
-  <div className="relative rounded-xl size-10 overflow-hidden shrink-0 bg-gradient-to-b from-[#60a5fa] to-[#7c3aed] shadow-[0px_4px_10px_0px_rgba(124,58,237,0.35)]">
-    <div className="absolute bg-white h-[2.5px] left-2 rounded-[1.5px] top-[10px] w-6" />
-    <div className="absolute bg-white h-[2.5px] left-2 rounded-[1.5px] top-[17px] w-5" />
-    <div className="absolute bg-white/70 h-[2.5px] left-2 rounded-[1.5px] top-6 w-4" />
-    <div className="absolute bg-white/70 h-[2.5px] left-2 rounded-[1.5px] top-[31px] w-3" />
-  </div>
-);
 
 function SvgIcon({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative size-10 shrink-0">
+    <div className="relative size-[44px] shrink-0">
       <Image src={src} alt={alt} fill className="object-contain" />
     </div>
   );
@@ -22,7 +14,7 @@ function SvgIcon({ src, alt }: { src: string; alt: string }) {
 
 const problems = [
   {
-    icon: <InfoIcon />,
+    icon: <SvgIcon src="/images/icon-info.svg" alt="너무 많은 정보 아이콘" />,
     title: "너무 많은 정보",
     description: "매일 쏟아지는 보안 기사와 CVE, 전부 확인할 시간이 없습니다.",
   },
