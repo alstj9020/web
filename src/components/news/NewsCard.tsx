@@ -48,11 +48,11 @@ export default function NewsCard({ item, onClick }: Props) {
             {item.cveIds.length > 2 && ` 外 ${item.cveIds.length - 2}건`}
           </p>
         )}
-        <h3 className="font-bold text-[16px] text-[#1e2235] leading-snug">{item.title}</h3>
-        <p className="text-[#3d4f6e] text-[13px] leading-[1.7] flex-1 line-clamp-4">{item.excerpt}</p>
+        <h3 className="font-bold text-[14px] text-[#1e2235] leading-snug">{item.title}</h3>
+        <p className="text-[#3d4f6e] text-[12px] leading-[1.7] flex-1 line-clamp-4">{item.excerpt}</p>
         {item.action && (
           <div className="bg-[#f5f6f8] rounded-lg px-4 py-3 mt-1">
-            <p className="text-[#3d4f6e] text-[12px]">
+            <p className="text-[#3d4f6e] text-[11px]">
               <span className="font-bold text-[#6bb8d4]">대응 :</span> {item.action}
             </p>
           </div>
