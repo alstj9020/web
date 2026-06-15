@@ -17,7 +17,6 @@ export default function NavBar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    setHidden(false);
     lastScrollY.current = 0;
 
     if (pathname !== "/") return;
@@ -35,7 +34,10 @@ export default function NavBar() {
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      setHidden(false);
+    };
   }, [pathname]);
 
   return (
