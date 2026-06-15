@@ -89,15 +89,15 @@ export default function CTASection() {
       />
 
       <div className="flex-1 flex items-center justify-center relative">
-        <div className="max-w-lg mx-auto px-6 md:px-8 w-full py-10 md:py-14 text-center">
+        <div className="max-w-lg mx-auto px-6 md:px-8 w-full py-6 md:py-14 text-center">
           <motion.div
-            className="flex justify-center mb-6"
+            className="flex justify-center mb-4"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="haru-float relative size-[120px] md:size-[140px]">
+            <div className="haru-float relative size-[90px] md:size-[140px]">
               <Image src="/images/haru-wink.svg" alt="하루보안 윙크 캐릭터" fill className="object-contain" />
             </div>
           </motion.div>
@@ -112,12 +112,12 @@ export default function CTASection() {
             <h2 className="font-black text-xl md:text-[28px] leading-[1.4] text-[#f5f6f8] text-center mb-3">
               오늘부터 하루보안 받아보기
             </h2>
-            <p className="font-normal text-sm md:text-base text-center mb-8" style={{ color: "#8A9BBD" }}>
+            <p className="font-normal text-sm md:text-base text-center mb-5" style={{ color: "#8A9BBD" }}>
               매일 아침, 나에게 맞는 보안 브리핑을 무료로 받으세요.
             </p>
           </motion.div>
 
-          <div className="flex flex-col gap-5 items-center">
+          <div className="flex flex-col gap-4 items-center">
             {/* 직군 선택 */}
             <div className="flex flex-col gap-3 items-center justify-center pt-2">
               <p className="font-normal text-[#a8b8d0] text-[13px]">직군을 선택해 주세요</p>

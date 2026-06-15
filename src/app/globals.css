@@ -48,28 +48,23 @@ body {
   min-height: calc(100dvh - 4rem);
 }
 
-/* 모바일: 참조 프로젝트와 동일하게 스냅 해제, 자연 스크롤 */
+/* 모바일: 스냅 스크롤 활성화 */
 @media (max-width: 767px) {
-  html {
-    scroll-snap-type: none;
-    scroll-padding-top: 0;
-  }
-
   .snap-container {
-    height: auto;
-    overflow-y: visible;
-    scroll-snap-type: none;
-    scroll-behavior: auto;
-    overscroll-behavior-y: auto;
+    height: calc(100dvh - 4rem);
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: none;
   }
 
   .snap-section {
-    min-height: auto;
+    min-height: calc(100dvh - 4rem);
     overflow: visible;
   }
 
   .snap-section-cta {
-    min-height: auto;
+    min-height: calc(100dvh - 4rem);
   }
 }
 

@@ -3,18 +3,10 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const InfoIcon = () => (
-  <div className="relative rounded-xl size-10 overflow-hidden shrink-0 bg-gradient-to-b from-[#60a5fa] to-[#7c3aed] shadow-[0px_4px_10px_0px_rgba(124,58,237,0.35)]">
-    <div className="absolute bg-white h-[2.5px] left-2 rounded-[1.5px] top-[10px] w-6" />
-    <div className="absolute bg-white h-[2.5px] left-2 rounded-[1.5px] top-[17px] w-5" />
-    <div className="absolute bg-white/70 h-[2.5px] left-2 rounded-[1.5px] top-6 w-4" />
-    <div className="absolute bg-white/70 h-[2.5px] left-2 rounded-[1.5px] top-[31px] w-3" />
-  </div>
-);
 
 function SvgIcon({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative size-10 shrink-0">
+    <div className="relative size-[44px] shrink-0">
       <Image src={src} alt={alt} fill className="object-contain" />
     </div>
   );
@@ -22,7 +14,7 @@ function SvgIcon({ src, alt }: { src: string; alt: string }) {
 
 const problems = [
   {
-    icon: <InfoIcon />,
+    icon: <SvgIcon src="/images/icon-info.svg" alt="너무 많은 정보 아이콘" />,
     title: "너무 많은 정보",
     description: "매일 쏟아지는 보안 기사와 CVE, 전부 확인할 시간이 없습니다.",
   },
@@ -46,15 +38,15 @@ const problems = [
 export default function ProblemSection() {
   return (
     <section id="problem" className="snap-section flex items-center justify-center bg-[#f5f6f8]" aria-label="문제점">
-      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-10">
-        <div className="flex flex-col md:flex-row items-center gap-8 mb-8 md:mb-10">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-6 md:py-10">
+        <div className="flex flex-col md:flex-row items-center gap-5 mb-5 md:mb-10">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="relative size-[100px] haru-float">
+            <div className="relative size-[80px] md:size-[100px] haru-float">
               <Image src="/images/haru-serious.svg" alt="하루보안 진지한 캐릭터" fill className="object-contain" />
             </div>
           </motion.div>
@@ -74,11 +66,11 @@ export default function ProblemSection() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {problems.map(({ icon, title, description }, i) => (
             <motion.div
               key={i}
-              className="bg-white rounded-2xl p-5 border border-[#e8eaed] flex flex-col gap-3"
+              className="bg-white rounded-2xl p-4 border border-[#e8eaed] flex flex-col gap-2"
               style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.08)" }}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
