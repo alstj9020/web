@@ -34,15 +34,15 @@ export default function HowItWorksSection() {
       className="snap-section flex items-center justify-center bg-[#f5f6f8]"
       aria-label="작동 방식"
     >
-      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-10 md:py-14">
-        <div className="flex flex-col md:flex-row items-center gap-8 mb-8 md:mb-14">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-6 md:py-14">
+        <div className="flex flex-col md:flex-row items-center gap-5 mb-5 md:mb-14">
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="relative size-[100px] haru-float">
+            <div className="relative size-[80px] md:size-[100px] haru-float">
               <Image src="/images/haru-explain.svg" alt="하루보안 설명 캐릭터" fill className="object-contain" />
             </div>
           </motion.div>
@@ -75,13 +75,13 @@ export default function HowItWorksSection() {
           {steps.map(({ step, iconSrc, iconAlt, title, desc }, i) => (
             <motion.div
               key={i}
-              className="flex-1 flex flex-col items-center text-center px-4 py-6 relative"
+              className="flex-1 flex flex-col items-center text-center px-4 py-4 relative"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15, duration: 0.55 }}
             >
-              <div className="relative size-[64px] mb-5 z-10">
+              <div className="relative size-[48px] md:size-[64px] mb-3 z-10">
                 <Image src={iconSrc} alt={iconAlt} fill className="object-contain" />
               </div>
               <span className="text-xs font-bold text-[#6bb8d4] tracking-widest mb-2">{step}</span>

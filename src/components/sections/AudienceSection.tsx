@@ -54,9 +54,9 @@ export default function AudienceSection() {
       className="snap-section flex items-center justify-center bg-[#e8eaed]"
       aria-label="직군별 서비스"
     >
-      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-10 md:py-14">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-6 md:py-14">
         <motion.div
-          className="flex flex-col gap-3 items-center text-center mb-8 md:mb-12"
+          className="flex flex-col gap-2 items-center text-center mb-5 md:mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -65,7 +65,7 @@ export default function AudienceSection() {
           <p className="text-[#6bb8d4] font-semibold text-xs uppercase tracking-wider">
             For Everyone
           </p>
-          <h2 className="font-black text-2xl md:text-3xl text-[#1e2235]">
+          <h2 className="font-black text-xl md:text-3xl text-[#1e2235]">
             당신의 직군에 맞춘 뉴스레터
           </h2>
           <p className="font-normal text-sm md:text-base text-[#3d4f6e] max-w-xl">
@@ -73,7 +73,7 @@ export default function AudienceSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full">
           {audiences.map(
             (
               {
@@ -90,7 +90,7 @@ export default function AudienceSection() {
             ) => (
               <motion.div
                 key={i}
-                className={`bg-[#f5f6f8] rounded-2xl p-5 flex flex-col ${
+                className={`bg-[#f5f6f8] rounded-2xl p-4 flex flex-col ${
                   highlighted
                     ? "border-2 border-[#6bb8d4]"
                     : "border border-[#e8eaed]"
