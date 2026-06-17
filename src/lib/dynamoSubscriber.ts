@@ -5,7 +5,7 @@ const ddb = DynamoDBDocumentClient.from(
   new DynamoDBClient({ region: process.env.AWS_REGION ?? "ap-northeast-2" })
 );
 
-export const SUBSCRIBERS_TABLE = "haruboan-subscribers";
+export const SUBSCRIBERS_TABLE = "2026-inha-cc-07-subscribers";
 
 export interface SubscriberItem {
   email: string;
