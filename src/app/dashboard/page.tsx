@@ -206,27 +206,16 @@ export default function DashboardPage() {
               </p>
             ) : (
               <div className="flex flex-col gap-3">
-                {(stats?.sources ?? []).map(({ name, count, active }) => (
+                {(stats?.sources ?? []).map(({ name, count, lastSeen }) => (
                   <div
                     key={name}
                     className="flex items-center justify-between py-2.5 border-b border-[#f5f6f8] last:border-0"
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-2 h-2 rounded-full ${active ? "bg-[#22c55e]" : "bg-[#f59e0b]"}`}
-                      />
-                      <span className="text-[14px] text-[#1e2235] font-medium">{name}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
+                    <span className="text-[14px] text-[#1e2235] font-medium">{name}</span>
+                    <div className="flex items-center gap-4">
                       <span className="text-[13px] text-[#3d4f6e]">{count}건</span>
-                      <span
-                        className={`text-[11px] px-2 py-0.5 rounded-md font-medium ${
-                          active
-                            ? "text-[#22c55e] bg-[#f0fdf4]"
-                            : "text-[#f59e0b] bg-[#fffbeb]"
-                        }`}
-                      >
-                        {active ? "정상" : "점검중"}
+                      <span className="text-[12px] text-[#a8b8d0]">
+                        {new Date(lastSeen).toLocaleDateString("ko-KR", { month: "short", day: "numeric" })}
                       </span>
                     </div>
                   </div>
