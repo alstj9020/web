@@ -41,20 +41,25 @@ export async function GET() {
     // 오늘(KST) fetched_at인 아이템 수
     const collectedToday = allItems.filter((item) => isToday(item.fetched_at)).length;
 
-    // severity 분포 집계
+    // severity 분포 집계 — 최근 7일 기준
+    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+    const recentItems = allItems.filter(
+      (item) => new Date(item.fetched_at).getTime() >= sevenDaysAgo
+    );
+
     const severityDist: DashboardStats["severityDist"] = {
       critical: 0, high: 0, medium: 0, low: 0, info: 0,
     };
     let criticalCount = 0;
     let kevCount = 0;
 
-    for (const item of allItems) {
+    for (const item of recentItems) {
       const label = item.severity.label?.toLowerCase() as keyof typeof severityDist;
       if (label in severityDist) {
         severityDist[label]++;
         if (label === "critical") criticalCount++;
       }
-      if (item.identifiers.kev_listed) kevCount++;
+      if (item.identifiers?.kev_listed) kevCount++;
     }
 
     // 최근 주요 CVE — CVSS 6.0 이상, 상위 10개

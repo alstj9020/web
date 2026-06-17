@@ -25,7 +25,7 @@ function toDisplayItem(item: ProcessedNews): NewsDisplayItem {
     title: item.title_ko ?? item.title,
     excerpt: item.summary ?? "",
     severity: mapSeverity(item.severity?.label),
-    cvss: item.severity?.cvss_score ?? null,
+    cvss: (item.severity?.cvss_score ?? 0) > 0 ? item.severity.cvss_score : null,
     cveIds,
     action: item.action?.steps?.[0] ?? "",
     source: getSourceName(item.source),

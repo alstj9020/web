@@ -125,7 +125,7 @@ export default function DashboardPage() {
           <div className="bg-white rounded-2xl border border-[#e8eaed] p-6">
             <h2 className="font-bold text-[18px] text-[#1e2235] mb-1">CVE 심각도 분포</h2>
             <p className="text-[#3d4f6e] text-[13px] mb-6">
-              최근 수집 {loading ? "–" : severityTotal}건 기준
+              최근 7일 수집 {loading ? "–" : severityTotal}건 기준
             </p>
 
             {loading ? (
