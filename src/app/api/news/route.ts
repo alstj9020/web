@@ -7,39 +7,39 @@ import {
 } from "@/lib/dynamoNews";
 import type { NewsDisplayItem, AudienceLabel, ProcessedNews } from "@/types/news";
 
-export const revalidate = 300;
+export const revalidate = 0;
 
 const AUDIENCE_MAP: Record<string, AudienceLabel> = {
   general: "일반인", developer: "개발자", security: "보안직군",
 };
 
 function toDisplayItem(item: ProcessedNews): NewsDisplayItem {
-  const cveIds = [...new Set(item.identifiers.cve_ids)];
-  const recommendedFor = (item.audience.recommended_for ?? [])
+  const cveIds = [...new Set(item.identifiers?.cve_ids ?? [])];
+  const recommendedFor = (item.audience?.recommended_for ?? [])
     .map((a) => AUDIENCE_MAP[a])
     .filter(Boolean) as AudienceLabel[];
-  const primary: AudienceLabel = AUDIENCE_MAP[item.audience.primary] ?? "보안직군";
+  const primary: AudienceLabel = AUDIENCE_MAP[item.audience?.primary ?? ""] ?? "보안직군";
 
   return {
     id: item.id,
     title: item.title_ko ?? item.title,
-    excerpt: item.summary,
-    severity: mapSeverity(item.severity.label),
-    cvss: item.severity.cvss_score,
+    excerpt: item.summary ?? "",
+    severity: mapSeverity(item.severity?.label),
+    cvss: item.severity?.cvss_score ?? null,
     cveIds,
-    action: item.action.steps[0] ?? "",
+    action: item.action?.steps?.[0] ?? "",
     source: getSourceName(item.source),
     sourceCount: 1,
     audience: primary,
     recommendedFor: recommendedFor.length > 0 ? recommendedFor : [primary],
-    affected: item.affected.map((a) => ({
+    affected: (item.affected ?? []).map((a) => ({
       vendor: a.vendor,
       product: a.product,
       versions_fixed: a.versions_fixed,
     })),
-    kevListed: item.identifiers.kev_listed,
-    ransomwareKnown: item.identifiers.ransomware_known,
-    publishedAt: item.published_at,
+    kevListed: item.identifiers?.kev_listed ?? false,
+    ransomwareKnown: item.identifiers?.ransomware_known ?? false,
+    publishedAt: item.published_at ?? "",
     techStack: item.tags?.tech_stack ?? [],
     sourceUrl: item.source_url ?? "",
   };
@@ -54,7 +54,14 @@ export async function GET() {
     }
 
     const displayItems = items
-      .map(toDisplayItem)
+      .flatMap((item) => {
+        try {
+          return [toDisplayItem(item)];
+        } catch (e) {
+          console.warn(`[api/news] skipped item id=${item.id}:`, e);
+          return [];
+        }
+      })
       .sort((a, b) => {
         const severityDiff =
           (SEVERITY_ORDER[a.severity.toLowerCase()] ?? 5) -

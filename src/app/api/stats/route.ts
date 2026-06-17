@@ -7,7 +7,7 @@ import {
 } from "@/lib/dynamoNews";
 import type { DashboardStats } from "@/types/news";
 
-export const revalidate = 300;
+export const revalidate = 0;
 
 export async function GET() {
   try {
