@@ -73,7 +73,7 @@ function EmailCard({ data, delay }: { data: EmailCardData; delay: number }) {
         </div>
       </div>
 
-      <div className="flex flex-col px-6 py-5 flex-1 min-h-[280px]">
+      <div className="flex flex-col px-5 py-4 flex-1 min-h-[220px]">
         <p className="text-[#3d4f6e] text-[10px] mb-3">{data.date}</p>
         <div className="bg-[#e8eaed] h-px mb-3" />
 
@@ -99,9 +99,9 @@ export default function EmailPreviewSection() {
 
   return (
     <section className="snap-section flex items-center justify-center bg-[#e8eaed]" aria-label="이메일 예시">
-      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-10 md:py-14">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full py-6 md:py-14">
         <motion.div
-          className="flex flex-col gap-3 items-center text-center mb-8 md:mb-12"
+          className="flex flex-col gap-2 items-center text-center mb-5 md:mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -115,7 +115,7 @@ export default function EmailPreviewSection() {
         </motion.div>
 
         {/* 모바일 탭 */}
-        <div className="flex gap-3 justify-center mb-8 md:hidden">
+        <div className="flex gap-3 justify-center mb-4 md:hidden">
           {emails.map((e, i) => (
             <button
               key={i}

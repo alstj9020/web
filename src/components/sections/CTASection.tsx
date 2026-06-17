@@ -1,25 +1,38 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Toast } from "@/components/ui/Toast";
-import { AUDIENCE_OPTIONS, TIME_OPTIONS, TOPICS_BY_AUDIENCE, AudienceType, TimeType, TopicsAudienceType } from "@/constants/subscription";
+import {
+  AUDIENCE_OPTIONS,
+  TIME_OPTIONS,
+  TOPICS_BY_AUDIENCE,
+  AudienceType,
+  TimeType,
+  TopicsAudienceType,
+} from "@/constants/subscription";
 
 export default function CTASection() {
   const router = useRouter();
 
-  const [selectedAudience, setSelectedAudience] = useState<AudienceType | null>(null);
+  const [selectedAudience, setSelectedAudience] = useState<AudienceType | null>(
+    null,
+  );
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<TimeType>("오후 12시");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
 
   const toggleTopic = useCallback((topic: string) => {
     setSelectedTopics((prev) =>
-      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic]
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
     );
   }, []);
 
@@ -29,7 +42,10 @@ export default function CTASection() {
       return;
     }
     if (selectedAudience !== "일반인" && selectedTopics.length === 0) {
-      setToast({ message: "관심 주제를 하나 이상 선택해 주세요.", type: "error" });
+      setToast({
+        message: "관심 주제를 하나 이상 선택해 주세요.",
+        type: "error",
+      });
       return;
     }
     if (!email.trim()) {
@@ -55,7 +71,7 @@ export default function CTASection() {
       });
 
       if (!res.ok) {
-        const data = await res.json() as { error?: string };
+        const data = (await res.json()) as { error?: string };
         throw new Error(data.error ?? "구독 중 오류가 발생했습니다.");
       }
 
@@ -78,7 +94,11 @@ export default function CTASection() {
   }, [email, selectedAudience, selectedTopics, selectedTime, router]);
 
   return (
-    <section id="cta" className="snap-section-cta flex flex-col bg-[#1e2235] relative overflow-hidden" aria-label="구독 신청">
+    <section
+      id="cta"
+      className="snap-section-cta flex flex-col bg-[#1e2235] relative overflow-hidden"
+      aria-label="구독 신청"
+    >
       {/* 배경 그라디언트 */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -89,16 +109,21 @@ export default function CTASection() {
       />
 
       <div className="flex-1 flex items-center justify-center relative">
-        <div className="max-w-lg mx-auto px-6 md:px-8 w-full py-10 md:py-14 text-center">
+        <div className="max-w-lg mx-auto px-6 md:px-8 w-full py-6 md:py-14 text-center">
           <motion.div
-            className="flex justify-center mb-6"
+            className="flex justify-center mb-4"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="haru-float relative size-[120px] md:size-[140px]">
-              <Image src="/images/haru-wink.svg" alt="하루보안 윙크 캐릭터" fill className="object-contain" />
+            <div className="haru-float relative size-[90px] md:size-[140px]">
+              <Image
+                src="/images/haru-wink.svg"
+                alt="하루보안 윙크 캐릭터"
+                fill
+                className="object-contain"
+              />
             </div>
           </motion.div>
 
@@ -108,24 +133,34 @@ export default function CTASection() {
             viewport={{ once: true }}
             transition={{ delay: 0.15, duration: 0.6 }}
           >
-            <p className="text-[#6bb8d4] font-semibold text-xs mb-2 uppercase tracking-wider">무료 구독</p>
+            <p className="text-[#6bb8d4] font-semibold text-xs mb-2 uppercase tracking-wider">
+              무료 구독
+            </p>
             <h2 className="font-black text-xl md:text-[28px] leading-[1.4] text-[#f5f6f8] text-center mb-3">
               오늘부터 하루보안 받아보기
             </h2>
-            <p className="font-normal text-sm md:text-base text-center mb-8" style={{ color: "#8A9BBD" }}>
+            <p
+              className="font-normal text-sm md:text-base text-center mb-5"
+              style={{ color: "#8A9BBD" }}
+            >
               매일 아침, 나에게 맞는 보안 브리핑을 무료로 받으세요.
             </p>
           </motion.div>
 
-          <div className="flex flex-col gap-5 items-center">
+          <div className="flex flex-col gap-4 items-center">
             {/* 직군 선택 */}
             <div className="flex flex-col gap-3 items-center justify-center pt-2">
-              <p className="font-normal text-[#a8b8d0] text-[13px]">직군을 선택해 주세요</p>
+              <p className="font-normal text-[#a8b8d0] text-[13px]">
+                직군을 선택해 주세요
+              </p>
               <div className="flex flex-wrap gap-3 items-center justify-center">
                 {AUDIENCE_OPTIONS.map((option) => (
                   <button
                     key={option}
-                    onClick={() => { setSelectedAudience(option); setSelectedTopics([]); }}
+                    onClick={() => {
+                      setSelectedAudience(option);
+                      setSelectedTopics([]);
+                    }}
                     className={`px-4 py-2 rounded-full font-bold text-[13px] cursor-pointer transition-colors ${
                       selectedAudience === option
                         ? "bg-[#6bb8d4] text-[#1e2235]"
@@ -141,9 +176,13 @@ export default function CTASection() {
             {/* 관심 주제 선택 — 일반인 제외, 직군 선택 후 표시 */}
             {selectedAudience && selectedAudience !== "일반인" && (
               <div className="flex flex-col gap-3 items-center justify-center">
-                <p className="font-normal text-[#a8b8d0] text-[13px]">관심 주제를 선택해 주세요</p>
+                <p className="font-normal text-[#a8b8d0] text-[13px]">
+                  관심 주제를 선택해 주세요
+                </p>
                 <div className="flex flex-wrap gap-3 items-center justify-center">
-                  {TOPICS_BY_AUDIENCE[selectedAudience as TopicsAudienceType].map((topic) => (
+                  {TOPICS_BY_AUDIENCE[
+                    selectedAudience as TopicsAudienceType
+                  ].map((topic) => (
                     <button
                       key={topic}
                       onClick={() => toggleTopic(topic)}
@@ -162,7 +201,9 @@ export default function CTASection() {
 
             {/* 시간 선택 */}
             <div className="flex flex-col gap-3 items-center justify-center">
-              <p className="font-normal text-[#a8b8d0] text-[13px]">받을 시간을 선택해 주세요</p>
+              <p className="font-normal text-[#a8b8d0] text-[13px]">
+                받을 시간을 선택해 주세요
+              </p>
               <div className="flex flex-wrap gap-3 items-center justify-center">
                 {TIME_OPTIONS.map((time) => (
                   <button
@@ -209,11 +250,20 @@ export default function CTASection() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full max-w-[1280px]">
           <p className="font-bold text-[18px] text-white">하루보안</p>
           <div className="flex flex-wrap gap-4 sm:gap-7 items-center justify-center">
-            {["서비스 소개", "개인정보 처리방침", "이용약관", "구독 해지"].map((link) => (
-              <p key={link} className="font-normal text-[13px] text-[#8a9bbd] cursor-pointer hover:text-white transition-colors">
+            {["개인정보 처리방침", "이용약관"].map((link) => (
+              <p
+                key={link}
+                className="font-normal text-[13px] text-[#8a9bbd] cursor-pointer hover:text-white transition-colors"
+              >
                 {link}
               </p>
             ))}
+            <Link
+              href="/unsubscribe"
+              className="font-normal text-[13px] text-[#8a9bbd] hover:text-white transition-colors"
+            >
+              구독 해지
+            </Link>
           </div>
         </div>
         <p className="font-normal text-[12px] text-[#8a9bbd] text-center">
@@ -222,7 +272,11 @@ export default function CTASection() {
       </div>
 
       {toast && (
-        <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
       )}
     </section>
   );

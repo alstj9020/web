@@ -22,7 +22,7 @@ export default function HeroSection() {
         }}
       />
 
-      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12 py-10 md:py-16 lg:py-20">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 w-full flex flex-col md:flex-row items-center gap-5 md:gap-12 py-6 md:py-16 lg:py-20">
         {/* 텍스트 */}
         <motion.div
           className="flex-1 text-center md:text-left"
@@ -32,7 +32,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7 }}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-4"
             style={{
               background: "rgba(107,184,212,0.15)",
               border: "1px solid rgba(107,184,212,0.3)",
@@ -46,7 +46,7 @@ export default function HeroSection() {
             <span className="text-[#6bb8d4] text-xs font-medium">매일 아침, 보안 브리핑</span>
           </motion.div>
 
-          <h1 className="font-black text-3xl md:text-4xl lg:text-5xl leading-tight text-white mb-5">
+          <h1 className="font-black text-2xl md:text-4xl lg:text-5xl leading-tight text-white mb-3">
             복잡한 보안 이슈,
             <br />
             <span className="text-[#6bb8d4]">하루보안</span>이
@@ -54,22 +54,22 @@ export default function HeroSection() {
             쉽게 풀어드려요
           </h1>
 
-          <p className="text-base leading-relaxed mb-8 max-w-lg mx-auto md:mx-0" style={{ color: "#8A9BBD" }}>
+          <p className="text-sm leading-relaxed mb-5 max-w-lg mx-auto md:mx-0 text-center md:text-left" style={{ color: "#8A9BBD" }}>
             AI가 매일 보안 뉴스를 분석해
-            <br className="hidden md:inline" />
+            <br />
             나의 직군에 맞는 보고서로 전달합니다
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+          <div className="flex flex-row gap-3 justify-center md:justify-start">
             <button
               onClick={() => scrollTo("cta")}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-[#1e2235] text-sm bg-[#6bb8d4] transition-all hover:brightness-110 active:scale-95"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-xl font-semibold text-[#1e2235] text-sm bg-[#6bb8d4] transition-all hover:brightness-110 active:scale-95"
             >
               무료로 시작하기
             </button>
             <button
               onClick={() => scrollTo("problem")}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-xl font-semibold text-sm border-2 transition-all hover:bg-white/5"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-xl font-semibold text-sm border-2 transition-all hover:bg-white/5"
               style={{ color: "#6bb8d4", borderColor: "rgba(107,184,212,0.4)" }}
             >
               서비스 알아보기
@@ -85,7 +85,7 @@ export default function HeroSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
         >
-          <div className="haru-float relative w-[120px] h-[120px] md:w-[160px] md:h-[160px]">
+          <div className="haru-float relative w-[90px] h-[90px] md:w-[160px] md:h-[160px]">
             <Image src="/images/haru-hero.svg" alt="하루보안 캐릭터" fill className="object-contain" />
           </div>
         </motion.div>
@@ -93,7 +93,7 @@ export default function HeroSection() {
 
       {/* 스크롤 힌트 */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}

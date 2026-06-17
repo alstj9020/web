@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const NAV_LINKS = [
   { label: "뉴스 피드", href: "/news" },
@@ -12,10 +12,36 @@ const NAV_LINKS = [
 
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
 
+  useEffect(() => {
+    lastScrollY.current = 0;
+
+    if (pathname !== "/") return;
+
+    function handleScroll() {
+      if (window.innerWidth >= 768) return;
+      const currentY = window.scrollY;
+      if (currentY > lastScrollY.current && currentY > 64) {
+        setHidden(true);
+        setMenuOpen(false);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = currentY;
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      setHidden(false);
+    };
+  }, [pathname]);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#1e2235]/95 backdrop-blur-sm border-b border-white/10">
+    <header className={`fixed top-0 left-0 right-0 z-50 bg-[#1e2235]/95 backdrop-blur-sm border-b border-white/10 transition-transform duration-300 ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
       <nav className="flex items-center justify-between px-6 md:px-16 lg:px-[120px] h-16 max-w-[1440px] mx-auto">
 
         {/* 좌측: 로고 + 브랜드명 */}

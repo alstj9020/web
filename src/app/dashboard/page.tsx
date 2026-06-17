@@ -78,13 +78,13 @@ export default function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-[#f5f6f8]">
-      <section className="bg-[#1e2235] px-6 md:px-16 lg:px-[120px] py-12 md:py-16">
+      <section className="bg-[#1e2235] px-6 md:px-16 lg:px-[120px] py-6 md:py-8">
         <div className="max-w-[1200px] mx-auto">
-          <p className="text-[#6bb8d4] text-[13px] font-medium tracking-wider mb-3">Dashboard</p>
-          <h1 className="font-black text-3xl md:text-[44px] text-[#f5f6f8] leading-tight mb-3">
+          <p className="text-[#6bb8d4] text-[12px] font-medium tracking-wider mb-2">Dashboard</p>
+          <h1 className="font-black text-2xl md:text-[32px] text-[#f5f6f8] leading-tight mb-2">
             보안 현황 대시보드
           </h1>
-          <p className="text-[#a8d8ea] text-base md:text-[18px]">
+          <p className="text-[#a8d8ea] text-sm md:text-[15px]">
             {new Date().toLocaleDateString("ko-KR", {
               year: "numeric", month: "long", day: "numeric", weekday: "long",
             })}{" "}기준

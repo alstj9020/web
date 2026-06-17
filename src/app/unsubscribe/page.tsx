@@ -8,7 +8,7 @@ import { Toast, type ToastState } from "@/components/ui/Toast";
 
 function UnsubscribeContent() {
   const searchParams = useSearchParams();
-  const email = searchParams.get("email") ?? "등록된 이메일";
+  const [email, setEmail] = useState(searchParams.get("email") ?? "");
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
   const [toast, setToast] = useState<ToastState | null>(null);
@@ -71,7 +71,13 @@ function UnsubscribeContent() {
 
         <div className="bg-[#2a3147] border border-[#3d4f6e] rounded-xl px-6 py-4 w-full max-w-sm">
           <p className="text-[#a8b8d0] text-[12px] mb-1">해지할 이메일</p>
-          <p className="text-[#f5f6f8] font-bold text-[16px] break-all">{email}</p>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="이메일 주소를 입력하세요"
+            className="w-full bg-transparent text-[#f5f6f8] font-bold text-[16px] focus:outline-none placeholder:text-[#3d4f6e]"
+          />
         </div>
 
         <div className="flex flex-col gap-3 w-full max-w-sm">
@@ -82,9 +88,6 @@ function UnsubscribeContent() {
           >
             {status === "loading" ? "처리 중..." : "구독 해지하기"}
           </button>
-          {!isValidEmail && (
-            <p className="text-[#ef4444] text-[13px]">유효한 이메일 링크로 접근해 주세요.</p>
-          )}
           <Link
             href="/"
             className="border-2 border-[#3d4f6e] text-[#a8b8d0] font-medium text-[15px] px-8 py-3.5 rounded-xl hover:border-[#6bb8d4] hover:text-[#6bb8d4] transition-colors text-center"
@@ -105,7 +108,7 @@ function UnsubscribeContent() {
 
 export default function UnsubscribePage() {
   return (
-    <main className="min-h-screen bg-[#1e2235] flex items-center justify-center px-6 py-16">
+    <main className="bg-[#1e2235] flex items-center justify-center px-6" style={{ minHeight: "calc(100dvh - 4rem)" }}>
       <Suspense fallback={<div className="text-[#a8d8ea] text-[16px]">로딩 중...</div>}>
         <UnsubscribeContent />
       </Suspense>
