@@ -45,7 +45,7 @@ export default function NewsPage() {
   const [selectedItem, setSelectedItem] = useState<NewsDisplayItem | null>(null);
   const filterRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
-  const allNewsRef = useRef<HTMLDivElement>(null);
+  const allNewsTitleRef = useRef<HTMLHeadingElement>(null);
 
   function fetchNews() {
     return fetch("/api/news").then((res) => {
@@ -152,7 +152,10 @@ export default function NewsPage() {
       </section>
 
       {/* 툴바 */}
-      <div className="bg-white border-b border-[#e8eaed] sticky top-16 z-40">
+      <div
+        className="bg-white border-b border-[#e8eaed] sticky top-16 z-40"
+        onClick={() => allNewsTitleRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+      >
         <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-3 flex items-center gap-2 flex-wrap">
 
           {/* 검색 */}
@@ -212,10 +215,7 @@ export default function NewsPage() {
           {/* 필터 버튼 + 드롭다운 */}
           <div className="relative" ref={filterRef}>
             <button
-              onClick={() => {
-                setFilterOpen((v) => !v);
-                allNewsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
+              onClick={() => setFilterOpen((v) => !v)}
               className={`flex items-center gap-1.5 py-2 px-3.5 text-[13px] border rounded-xl transition-all shadow-sm ${
                 filterOpen || activeFilterCount > 0
                   ? "border-[#6bb8d4] text-[#6bb8d4] bg-[#e8f4fb]"
@@ -340,8 +340,8 @@ export default function NewsPage() {
       </div>
 
       {/* 기사 목록 */}
-      <div ref={allNewsRef} className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
-        <h2 className="font-bold text-[16px] text-[#1e2235] mb-4">전체 뉴스</h2>
+      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
+        <h2 ref={allNewsTitleRef} className="font-bold text-[16px] text-[#1e2235] mb-4 scroll-mt-[120px]">전체 뉴스</h2>
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
