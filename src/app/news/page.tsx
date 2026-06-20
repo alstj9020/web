@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import type { NewsDisplayItem, AudienceLabel } from "@/types/news";
+import { isTodayKST } from "@/lib/date";
 import NewsCard from "@/components/news/NewsCard";
 import NewsListItem from "@/components/news/NewsListItem";
 import NewsDetailModal from "@/components/news/NewsDetailModal";
@@ -40,21 +41,35 @@ export default function NewsPage() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [news, setNews] = useState<NewsDisplayItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<NewsDisplayItem | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
 
+  function fetchNews() {
+    return fetch("/api/news").then((res) => {
+      if (!res.ok) throw new Error("뉴스를 불러오지 못했습니다.");
+      return res.json() as Promise<NewsDisplayItem[]>;
+    });
+  }
+
   useEffect(() => {
-    fetch("/api/news")
-      .then((res) => {
-        if (!res.ok) throw new Error("뉴스를 불러오지 못했습니다.");
-        return res.json() as Promise<NewsDisplayItem[]>;
-      })
+    fetchNews()
       .then((data) => setNews(data))
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
+
+  function handleRefresh() {
+    setRefreshing(true);
+    setError(null);
+    fetchNews()
+      .then((data) => setNews(data))
+      .catch((err: Error) => setError(err.message))
+      .finally(() => setRefreshing(false));
+  }
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -64,6 +79,11 @@ export default function NewsPage() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const todayNews = useMemo(
+    () => news.filter((n) => isTodayKST(n.publishedAt)),
+    [news]
+  );
 
   const allSources = useMemo(
     () => [...new Set(news.map((n) => n.source))].sort(),
@@ -123,6 +143,66 @@ export default function NewsPage() {
         </div>
       </section>
 
+      {/* 오늘의 뉴스 */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-bold text-[16px] text-[#1e2235]">오늘의 뉴스</h2>
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="flex items-center gap-1.5 text-[12px] text-[#3d4f6e] hover:text-[#6bb8d4] transition-colors disabled:opacity-50"
+          >
+            <svg
+              className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`}
+              fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
+            >
+              <path d="M4 4v6h6M20 20v-6h-6" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 10a8 8 0 0 1 14.9-3M20 14a8 8 0 0 1-14.9 3" strokeLinecap="round" />
+            </svg>
+            새로고침
+          </button>
+        </div>
+
+        {error ? (
+          <div className="text-center py-12">
+            <p className="text-[#ef4444] text-[14px] mb-1">데이터를 불러오지 못했습니다.</p>
+            <p className="text-[#a8b8d0] text-[12px]">{error}</p>
+          </div>
+        ) : loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        ) : todayNews.length === 0 ? (
+          <div className="text-center py-12 text-[#a8b8d0]">
+            <p className="text-[14px]">오늘은 아직 수집된 뉴스가 없습니다.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {todayNews.map((item) => (
+              <NewsCard key={item.id} item={item} onClick={setSelectedItem} />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* 전체보기 토글 */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px]">
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="w-full flex items-center justify-center gap-2 py-3 border-t border-[#e8eaed] text-[13px] font-medium text-[#3d4f6e] hover:text-[#6bb8d4] transition-colors"
+        >
+          전체보기 ({news.length}건)
+          <svg
+            className={`w-3 h-3 transition-transform ${expanded ? "rotate-180" : ""}`}
+            fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"
+          >
+            <path d="m6 9 6 6 6-6" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      {expanded && (
+        <>
       {/* 툴바 */}
       <div className="bg-white border-b border-[#e8eaed] sticky top-16 z-40">
         <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-3 flex items-center gap-2 flex-wrap">
@@ -262,12 +342,7 @@ export default function NewsPage() {
 
       {/* 기사 목록 */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
-        {error ? (
-          <div className="text-center py-24">
-            <p className="text-[#ef4444] text-[16px] mb-2">데이터를 불러오지 못했습니다.</p>
-            <p className="text-[#a8b8d0] text-[13px]">{error}</p>
-          </div>
-        ) : loading ? (
+        {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
@@ -291,6 +366,8 @@ export default function NewsPage() {
           </div>
         )}
       </div>
+        </>
+      )}
     </main>
   );
 }
