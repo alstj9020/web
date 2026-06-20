@@ -185,6 +185,24 @@ export default function NewsPage() {
         )}
       </div>
 
+      {/* 전체보기 토글 */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px]">
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="w-full flex items-center justify-center gap-2 py-3 border-t border-[#e8eaed] text-[13px] font-medium text-[#3d4f6e] hover:text-[#6bb8d4] transition-colors"
+        >
+          전체보기 ({news.length}건)
+          <svg
+            className={`w-3 h-3 transition-transform ${expanded ? "rotate-180" : ""}`}
+            fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"
+          >
+            <path d="m6 9 6 6 6-6" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      {expanded && (
+        <>
       {/* 툴바 */}
       <div className="bg-white border-b border-[#e8eaed] sticky top-16 z-40">
         <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-3 flex items-center gap-2 flex-wrap">
@@ -353,6 +371,8 @@ export default function NewsPage() {
           </div>
         )}
       </div>
+        </>
+      )}
     </main>
   );
 }
