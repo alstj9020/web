@@ -271,7 +271,10 @@ export default function NewsPage() {
           )}
 
           {/* 뷰 토글 */}
-          <div className="flex border border-[#e8eaed] rounded-lg overflow-hidden ml-auto">
+          <div
+            className="flex border border-[#e8eaed] rounded-lg overflow-hidden ml-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button onClick={() => setViewMode("grid")} className={`px-3 py-2 text-[14px] transition-colors ${viewMode === "grid" ? "bg-[#1e2235] text-white" : "bg-white text-[#3d4f6e] hover:bg-[#f5f6f8]"}`} title="카드 보기">⊞</button>
             <button onClick={() => setViewMode("list")} className={`px-3 py-2 text-[14px] transition-colors ${viewMode === "list" ? "bg-[#1e2235] text-white" : "bg-white text-[#3d4f6e] hover:bg-[#f5f6f8]"}`} title="리스트 보기">☰</button>
           </div>
@@ -341,7 +344,7 @@ export default function NewsPage() {
 
       {/* 기사 목록 */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
-        <h2 ref={allNewsTitleRef} className="font-bold text-[16px] text-[#1e2235] mb-4 scroll-mt-[120px]">전체 뉴스</h2>
+        <h2 ref={allNewsTitleRef} className="font-bold text-[16px] text-[#1e2235] mb-4 scroll-mt-[150px]">전체 뉴스</h2>
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
