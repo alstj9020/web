@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import type { NewsDisplayItem, AudienceLabel } from "@/types/news";
-import { isTodayKST } from "@/lib/date";
 import NewsCard from "@/components/news/NewsCard";
 import NewsListItem from "@/components/news/NewsListItem";
 import NewsDetailModal from "@/components/news/NewsDetailModal";
@@ -44,7 +43,6 @@ export default function NewsPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<NewsDisplayItem | null>(null);
-  const [expanded, setExpanded] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
   const sortRef = useRef<HTMLDivElement>(null);
 
@@ -80,8 +78,17 @@ export default function NewsPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const todayNews = useMemo(
-    () => news.filter((n) => isTodayKST(n.publishedAt)),
+  const highlightNews = useMemo(
+    () =>
+      [...news]
+        .sort((a, b) => {
+          const rankDiff =
+            (SEVERITY_RANK[a.severity.toLowerCase()] ?? 5) -
+            (SEVERITY_RANK[b.severity.toLowerCase()] ?? 5);
+          if (rankDiff !== 0) return rankDiff;
+          return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+        })
+        .slice(0, 6),
     [news]
   );
 
@@ -132,7 +139,7 @@ export default function NewsPage() {
         <div className="max-w-[1200px] mx-auto">
           <p className="text-[#6bb8d4] text-[12px] font-medium tracking-wider mb-2">News Feed</p>
           <h1 className="font-black text-2xl md:text-[32px] text-[#f5f6f8] leading-tight mb-2">
-            오늘의 보안 뉴스
+            최신 보안 뉴스
           </h1>
           <p className="text-[#a8d8ea] text-sm md:text-[15px]">
             {new Date().toLocaleDateString("ko-KR", {
@@ -143,66 +150,6 @@ export default function NewsPage() {
         </div>
       </section>
 
-      {/* 오늘의 뉴스 */}
-      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-[16px] text-[#1e2235]">오늘의 뉴스</h2>
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="flex items-center gap-1.5 text-[12px] text-[#3d4f6e] hover:text-[#6bb8d4] transition-colors disabled:opacity-50"
-          >
-            <svg
-              className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`}
-              fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
-            >
-              <path d="M4 4v6h6M20 20v-6h-6" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M4 10a8 8 0 0 1 14.9-3M20 14a8 8 0 0 1-14.9 3" strokeLinecap="round" />
-            </svg>
-            새로고침
-          </button>
-        </div>
-
-        {error ? (
-          <div className="text-center py-12">
-            <p className="text-[#ef4444] text-[14px] mb-1">데이터를 불러오지 못했습니다.</p>
-            <p className="text-[#a8b8d0] text-[12px]">{error}</p>
-          </div>
-        ) : loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
-          </div>
-        ) : todayNews.length === 0 ? (
-          <div className="text-center py-12 text-[#a8b8d0]">
-            <p className="text-[14px]">오늘은 아직 수집된 뉴스가 없습니다.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {todayNews.map((item) => (
-              <NewsCard key={item.id} item={item} onClick={setSelectedItem} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* 전체보기 토글 */}
-      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px]">
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          className="w-full flex items-center justify-center gap-2 py-3 border-t border-[#e8eaed] text-[13px] font-medium text-[#3d4f6e] hover:text-[#6bb8d4] transition-colors"
-        >
-          전체보기 ({news.length}건)
-          <svg
-            className={`w-3 h-3 transition-transform ${expanded ? "rotate-180" : ""}`}
-            fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"
-          >
-            <path d="m6 9 6 6 6-6" strokeLinecap="round" />
-          </svg>
-        </button>
-      </div>
-
-      {expanded && (
-        <>
       {/* 툴바 */}
       <div className="bg-white border-b border-[#e8eaed] sticky top-16 z-40">
         <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-3 flex items-center gap-2 flex-wrap">
@@ -327,6 +274,48 @@ export default function NewsPage() {
         </div>
       </div>
 
+      {/* 최근 주요 뉴스 */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-bold text-[16px] text-[#1e2235]">최근 주요 뉴스</h2>
+          <button
+            onClick={handleRefresh}
+            disabled={refreshing}
+            className="flex items-center gap-1.5 text-[12px] text-[#3d4f6e] hover:text-[#6bb8d4] transition-colors disabled:opacity-50"
+          >
+            <svg
+              className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`}
+              fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
+            >
+              <path d="M4 4v6h6M20 20v-6h-6" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 10a8 8 0 0 1 14.9-3M20 14a8 8 0 0 1-14.9 3" strokeLinecap="round" />
+            </svg>
+            새로고침
+          </button>
+        </div>
+
+        {error ? (
+          <div className="text-center py-12">
+            <p className="text-[#ef4444] text-[14px] mb-1">데이터를 불러오지 못했습니다.</p>
+            <p className="text-[#a8b8d0] text-[12px]">{error}</p>
+          </div>
+        ) : loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        ) : news.length === 0 ? (
+          <div className="text-center py-12 text-[#a8b8d0]">
+            <p className="text-[14px]">아직 수집된 뉴스가 없습니다.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {highlightNews.map((item) => (
+              <NewsCard key={item.id} item={item} onClick={setSelectedItem} />
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* 심각도 범례 */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] pt-6 pb-0">
         <div className="flex items-center gap-4 flex-wrap">
@@ -366,8 +355,6 @@ export default function NewsPage() {
           </div>
         )}
       </div>
-        </>
-      )}
     </main>
   );
 }
