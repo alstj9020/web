@@ -342,12 +342,7 @@ export default function NewsPage() {
 
       {/* 기사 목록 */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
-        {error ? (
-          <div className="text-center py-24">
-            <p className="text-[#ef4444] text-[16px] mb-2">데이터를 불러오지 못했습니다.</p>
-            <p className="text-[#a8b8d0] text-[13px]">{error}</p>
-          </div>
-        ) : loading ? (
+        {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
