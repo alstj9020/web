@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { NewsDisplayItem, SeverityLabel } from "@/types/news";
 
@@ -17,6 +18,15 @@ interface Props {
 }
 
 export default function NewsDetailModal({ item, onClose }: Props) {
+  useEffect(() => {
+    if (!item) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [item]);
+
   return (
     <AnimatePresence>
       {item && (

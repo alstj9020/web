@@ -59,7 +59,7 @@ export default function NewsCard({ item, onClick }: Props) {
         )}
       </div>
 
-      <div className="px-5 pb-4 flex items-center justify-between flex-wrap gap-2">
+      <div className="px-5 pb-4 flex items-end justify-between flex-wrap gap-2">
         <div className="flex gap-1.5 flex-wrap">
           {item.techStack.slice(0, 3).map((tech) => (
             <span key={tech} className="bg-[#f5f6f8] text-[#3d4f6e] text-[10px] font-medium px-2 py-0.5 rounded-md border border-[#e8eaed]">
