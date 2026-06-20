@@ -5,13 +5,19 @@ import {
   mapSeverity,
   isToday,
 } from "@/lib/dynamoNews";
+import { countAllSubscribers } from "@/lib/dynamoSubscriber";
+import { countTodayPending } from "@/lib/dynamoRecommendations";
 import type { DashboardStats } from "@/types/news";
 
 export const revalidate = 0;
 
 export async function GET() {
   try {
-    const allItems = await scanAllNews();
+    const [allItems, subscriberCount, pendingCount] = await Promise.all([
+      scanAllNews(),
+      countAllSubscribers(),
+      countTodayPending(),
+    ]);
 
     if (allItems.length === 0) {
       return NextResponse.json(emptyStats());
@@ -86,8 +92,8 @@ export async function GET() {
       severityDist,
       sources,
       recentCVEs,
-      subscribers: null,
-      emailsSentToday: null,
+      subscribers: subscriberCount,
+      emailsSentToday: pendingCount,
     } satisfies DashboardStats);
   } catch (error) {
     console.error("[api/stats] error:", error);

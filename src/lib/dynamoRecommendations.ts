@@ -1,17 +1,34 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 import type { NewsletterArticle } from "@/lib/ses";
 
 const ddb = DynamoDBDocumentClient.from(
   new DynamoDBClient({ region: process.env.AWS_REGION ?? "ap-northeast-2" })
 );
 
-// TODO: 팀원과 테이블명 및 스키마 확정 후 아래 상수와 조회 로직 수정
-// 예상 스키마:
-//   PK: email (String)
-//   SK 또는 date: "YYYY-MM-DD" (오늘 날짜)
-//   articles: List<{ title, summary, severity, cvss_score, cve_ids, action, source_url }>
-export const RECOMMENDATIONS_TABLE = "haruboan-recommendations";
+export const RECOMMENDATIONS_TABLE = "2026-inha-cc-07-recommendations";
+
+export async function countTodayPending(): Promise<number> {
+  const kstOffset = 9 * 60 * 60 * 1000;
+  const today = new Date(Date.now() + kstOffset).toISOString().slice(0, 10);
+  let count = 0;
+  let lastKey: Record<string, unknown> | undefined;
+  do {
+    const resp = await ddb.send(
+      new ScanCommand({
+        TableName: RECOMMENDATIONS_TABLE,
+        FilterExpression: "#d = :today",
+        ExpressionAttributeNames: { "#d": "date" },
+        ExpressionAttributeValues: { ":today": today },
+        Select: "COUNT",
+        ExclusiveStartKey: lastKey,
+      })
+    );
+    count += resp.Count ?? 0;
+    lastKey = resp.LastEvaluatedKey as Record<string, unknown> | undefined;
+  } while (lastKey);
+  return count;
+}
 
 export async function getRecommendations(email: string): Promise<NewsletterArticle[]> {
   const kstOffset = 9 * 60 * 60 * 1000;

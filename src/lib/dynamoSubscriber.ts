@@ -24,6 +24,23 @@ export async function deleteSubscriber(email: string): Promise<void> {
   await ddb.send(new DeleteCommand({ TableName: SUBSCRIBERS_TABLE, Key: { email } }));
 }
 
+export async function countAllSubscribers(): Promise<number> {
+  let count = 0;
+  let lastKey: Record<string, unknown> | undefined;
+  do {
+    const resp = await ddb.send(
+      new ScanCommand({
+        TableName: SUBSCRIBERS_TABLE,
+        Select: "COUNT",
+        ExclusiveStartKey: lastKey,
+      })
+    );
+    count += resp.Count ?? 0;
+    lastKey = resp.LastEvaluatedKey as Record<string, unknown> | undefined;
+  } while (lastKey);
+  return count;
+}
+
 export async function scanSubscribersByDeliveryTime(deliveryTime: string): Promise<SubscriberItem[]> {
   const items: SubscriberItem[] = [];
   let lastKey: Record<string, unknown> | undefined;

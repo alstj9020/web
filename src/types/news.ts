@@ -77,8 +77,8 @@ export interface DashboardStats {
     severity: SeverityLabel;
     source: string;
   }[];
-  subscribers: null;
-  emailsSentToday: null;
+  subscribers: number | null;
+  emailsSentToday: number | null;
 }
 
 /** API /api/news 응답 아이템 */
