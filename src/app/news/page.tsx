@@ -274,10 +274,23 @@ export default function NewsPage() {
         </div>
       </div>
 
-      {/* 최근 주요 뉴스 */}
+      {/* 심각도 범례 */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] pt-6 pb-0">
+        <div className="flex items-center gap-4 flex-wrap">
+          {SEVERITY_LEGEND.map((s) => (
+            <div key={s.label} className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
+              <span className="text-[12px] font-semibold" style={{ color: s.color }}>{s.label}</span>
+              <span className="text-[11px] text-[#a8b8d0]">{s.desc}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 최근 심각도 TOP 6 이슈 */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-[16px] text-[#1e2235]">최근 주요 뉴스</h2>
+          <h2 className="font-bold text-[16px] text-[#1e2235]">최근 심각도 TOP 6 이슈</h2>
           <button
             onClick={handleRefresh}
             disabled={refreshing}
@@ -307,30 +320,24 @@ export default function NewsPage() {
           <div className="text-center py-12 text-[#a8b8d0]">
             <p className="text-[14px]">아직 수집된 뉴스가 없습니다.</p>
           </div>
-        ) : (
+        ) : viewMode === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {highlightNews.map((item) => (
               <NewsCard key={item.id} item={item} onClick={setSelectedItem} />
             ))}
           </div>
+        ) : (
+          <div className="bg-white rounded-xl border border-[#e8eaed] overflow-hidden">
+            {highlightNews.map((item) => (
+              <NewsListItem key={item.id} item={item} onClick={setSelectedItem} />
+            ))}
+          </div>
         )}
-      </div>
-
-      {/* 심각도 범례 */}
-      <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] pt-6 pb-0">
-        <div className="flex items-center gap-4 flex-wrap">
-          {SEVERITY_LEGEND.map((s) => (
-            <div key={s.label} className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: s.color }} />
-              <span className="text-[12px] font-semibold" style={{ color: s.color }}>{s.label}</span>
-              <span className="text-[11px] text-[#a8b8d0]">{s.desc}</span>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* 기사 목록 */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
+        <h2 className="font-bold text-[16px] text-[#1e2235] mb-4">전체 뉴스</h2>
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
