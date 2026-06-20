@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import type { NewsDisplayItem, AudienceLabel } from "@/types/news";
-import { isTodayKST } from "@/lib/date";
 import NewsCard from "@/components/news/NewsCard";
 import NewsListItem from "@/components/news/NewsListItem";
 import NewsDetailModal from "@/components/news/NewsDetailModal";
@@ -80,8 +79,17 @@ export default function NewsPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const todayNews = useMemo(
-    () => news.filter((n) => isTodayKST(n.publishedAt)),
+  const highlightNews = useMemo(
+    () =>
+      [...news]
+        .sort((a, b) => {
+          const rankDiff =
+            (SEVERITY_RANK[a.severity.toLowerCase()] ?? 5) -
+            (SEVERITY_RANK[b.severity.toLowerCase()] ?? 5);
+          if (rankDiff !== 0) return rankDiff;
+          return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+        })
+        .slice(0, 6),
     [news]
   );
 
@@ -132,7 +140,7 @@ export default function NewsPage() {
         <div className="max-w-[1200px] mx-auto">
           <p className="text-[#6bb8d4] text-[12px] font-medium tracking-wider mb-2">News Feed</p>
           <h1 className="font-black text-2xl md:text-[32px] text-[#f5f6f8] leading-tight mb-2">
-            오늘의 보안 뉴스
+            최신 보안 뉴스
           </h1>
           <p className="text-[#a8d8ea] text-sm md:text-[15px]">
             {new Date().toLocaleDateString("ko-KR", {
@@ -143,10 +151,10 @@ export default function NewsPage() {
         </div>
       </section>
 
-      {/* 오늘의 뉴스 */}
+      {/* 최근 주요 뉴스 */}
       <div className="max-w-[1200px] mx-auto px-6 md:px-16 lg:px-[120px] py-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-bold text-[16px] text-[#1e2235]">오늘의 뉴스</h2>
+          <h2 className="font-bold text-[16px] text-[#1e2235]">최근 주요 뉴스</h2>
           <button
             onClick={handleRefresh}
             disabled={refreshing}
@@ -170,15 +178,15 @@ export default function NewsPage() {
           </div>
         ) : loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)}
+            {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
           </div>
-        ) : todayNews.length === 0 ? (
+        ) : news.length === 0 ? (
           <div className="text-center py-12 text-[#a8b8d0]">
-            <p className="text-[14px]">오늘은 아직 수집된 뉴스가 없습니다.</p>
+            <p className="text-[14px]">아직 수집된 뉴스가 없습니다.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {todayNews.map((item) => (
+            {highlightNews.map((item) => (
               <NewsCard key={item.id} item={item} onClick={setSelectedItem} />
             ))}
           </div>
