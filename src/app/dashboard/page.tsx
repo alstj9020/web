@@ -115,8 +115,8 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard label="오늘 수집된 이슈" value={stats?.collectedToday ?? 0} unit="건" />
             <StatCard label="Critical CVE" value={stats?.criticalCount ?? 0} unit="건" />
-            <StatCard label="오늘 발송 완료" value={null} unit="건" pending />
-            <StatCard label="누적 구독자" value={null} unit="명" pending />
+            <StatCard label="오늘 발송 대기" value={stats?.emailsSentToday ?? 0} unit="건" />
+            <StatCard label="누적 구독자" value={stats?.subscribers ?? 0} unit="명" />
           </div>
         )}
 
