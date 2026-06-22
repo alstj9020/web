@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
@@ -245,31 +244,6 @@ export default function CTASection() {
         </div>
       </div>
 
-      {/* 푸터 */}
-      <div className="flex flex-col gap-3 items-center w-full px-6 md:px-8 py-5 border-t border-white/10 relative">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 w-full max-w-[1280px]">
-          <p className="font-bold text-[18px] text-white">하루보안</p>
-          <div className="flex flex-wrap gap-4 sm:gap-7 items-center justify-center">
-            {["개인정보 처리방침", "이용약관"].map((link) => (
-              <p
-                key={link}
-                className="font-normal text-[13px] text-[#8a9bbd] cursor-pointer hover:text-white transition-colors"
-              >
-                {link}
-              </p>
-            ))}
-            <Link
-              href="/unsubscribe"
-              className="font-normal text-[13px] text-[#8a9bbd] hover:text-white transition-colors"
-            >
-              구독 해지
-            </Link>
-          </div>
-        </div>
-        <p className="font-normal text-[12px] text-[#8a9bbd] text-center">
-          © 2026 하루보안(HaruBoan). All rights reserved.
-        </p>
-      </div>
 
       {toast && (
         <Toast

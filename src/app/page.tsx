@@ -4,6 +4,7 @@ import AudienceSection from "@/components/sections/AudienceSection";
 import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import EmailPreviewSection from "@/components/sections/EmailPreviewSection";
 import CTASection from "@/components/sections/CTASection";
+import McpSection from "@/components/sections/McpSection";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <HowItWorksSection />
       <EmailPreviewSection />
       <CTASection />
+      <McpSection />
     </div>
   );
 }
