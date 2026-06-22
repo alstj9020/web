@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "하루보안 — 매일 아침, 당신에게 맞는 보안 뉴스",
   description:
     "보안 이슈를 자동 수집하고, AI가 당신의 직군에 맞게 풀어드립니다.",
+  icons: {
+    icon: "/images/haru-hero.svg",
+  },
 };
 
 export default function RootLayout({
