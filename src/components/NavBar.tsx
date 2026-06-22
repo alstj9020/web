@@ -59,6 +59,20 @@ export default function NavBar() {
 
         {/* 우측: 데스크탑 네비게이션 */}
         <div className="hidden md:flex items-center gap-8">
+          <Link
+            href="/#cta"
+            className="font-medium text-[13px] px-4 py-1.5 rounded-full border border-[#6bb8d4] text-[#6bb8d4] hover:bg-[#6bb8d4] hover:text-[#1e2235] transition-all duration-200"
+          >
+            구독하기
+          </Link>
+
+          <Link
+            href="/#mcp"
+            className="font-medium text-[13px] px-4 py-1.5 rounded-full border border-[#FF9900] text-[#FF9900] hover:bg-[#FF9900] hover:text-[#1e2235] transition-all duration-200"
+          >
+            MCP 사용법
+          </Link>
+
           <button
             onClick={() => {
               if (pathname === "/") {
@@ -73,20 +87,6 @@ export default function NavBar() {
           >
             홈
           </button>
-
-          <Link
-            href="/#cta"
-            className="font-medium text-[13px] px-4 py-1.5 rounded-full border border-[#6bb8d4] text-[#6bb8d4] hover:bg-[#6bb8d4] hover:text-[#1e2235] transition-all duration-200"
-          >
-            구독하기
-          </Link>
-
-          <Link
-            href="/#mcp"
-            className="font-medium text-[13px] px-4 py-1.5 rounded-full border border-[#FF9900] text-[#FF9900] hover:bg-[#FF9900] hover:text-[#1e2235] transition-all duration-200"
-          >
-            MCP 사용법
-          </Link>
 
           {NAV_LINKS.map(({ label, href }) => {
             const isActive = pathname === href;
@@ -135,6 +135,20 @@ export default function NavBar() {
         }`}
       >
         <div className="bg-[#1e2235] border-t border-white/10 px-6 py-3 flex flex-col">
+          <Link
+            href="/#cta"
+            onClick={() => setMenuOpen(false)}
+            className="font-medium text-[15px] py-3 border-b border-white/5 text-[#6bb8d4]"
+          >
+            구독하기
+          </Link>
+          <Link
+            href="/#mcp"
+            onClick={() => setMenuOpen(false)}
+            className="font-medium text-[15px] py-3 border-b border-white/5 text-[#FF9900]"
+          >
+            MCP 사용법
+          </Link>
           <button
             onClick={() => {
               setMenuOpen(false);
@@ -150,20 +164,6 @@ export default function NavBar() {
           >
             홈
           </button>
-          <Link
-            href="/#cta"
-            onClick={() => setMenuOpen(false)}
-            className="font-medium text-[15px] py-3 border-b border-white/5 text-[#6bb8d4]"
-          >
-            구독하기
-          </Link>
-          <Link
-            href="/#mcp"
-            onClick={() => setMenuOpen(false)}
-            className="font-medium text-[15px] py-3 border-b border-white/5 text-[#FF9900]"
-          >
-            MCP 사용법
-          </Link>
           {NAV_LINKS.map(({ label, href }) => {
             const isActive = pathname === href;
             return (
