@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description:
     "보안 이슈를 자동 수집하고, AI가 당신의 직군에 맞게 풀어드립니다.",
   icons: {
-    icon: "/images/haru-hero.svg",
+    icon: "/images/haru-favicon.svg",
   },
 };
 
